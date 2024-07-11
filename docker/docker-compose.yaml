@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  mysqlsrv:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "pegasusDB"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ~/mysql:/var/lib/mysql
+    networks:
+      - mysql-compose-network
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - mysql-compose-network
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ~/redis:/var/lib/mysql
+    environment:
+      - REDIS_PASSWORD=pegasus
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+
+networks:
+  mysql-compose-network:
+    driver: bridge
