@@ -21,18 +21,6 @@ services:
     networks:
       - mysql-compose-network
 
-  redis:
-    image: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - ~/redis:/var/lib/mysql
-    environment:
-      - REDIS_PASSWORD=pegasus
-      - REDIS_PORT=6379
-      - REDIS_DATABASES=16
-
 networks:
   mysql-compose-network:
     driver: bridge
