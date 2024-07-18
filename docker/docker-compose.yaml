@@ -2,15 +2,15 @@ version: '3.8'
 
 services:
 
-  mysqlsrv:
+  db:
     image: mysql:8.4
     environment:
-      MYSQL_ROOT_PASSWORD: "password"
-      MYSQL_DATABASE: "pegasusDB"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "restauranteDB"
     ports:
       - "3306:3306"
     volumes:
-      - ~/mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
       - mysql-compose-network
 
@@ -20,6 +20,9 @@ services:
       - "8080:8080"
     networks:
       - mysql-compose-network
+
+volumes:
+  mysql_data:
 
 networks:
   mysql-compose-network:
