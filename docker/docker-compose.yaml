@@ -1,29 +1,69 @@
 version: '3.8'
 
 services:
-
-  db:
-    image: mysql:8.4
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always        # Reinicia o container se ele falhar
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_DATABASE: "restauranteDB"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}   
+      MYSQL_DATABASE: ${MYSQL_DATABASE}             
+      MYSQL_USER: ${MYSQL_USER}                     
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}             
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql                   # Persistência dos dados do banco de dados
     networks:
-      - mysql-compose-network
+      - app-network
+    healthcheck:  # O healthcheck verifica se o serviço está funcionando corretamente. Se o healthcheck falhar, o Docker pode reiniciar o contêiner, dependendo da política de reinício configurada.
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
 
-  adminer:
-    image: adminer
-    ports:
+  app:
+    build:
+      context: ..             # Diretório onde está o Dockerfile
+      dockerfile: docker/Dockerfile  
+    container_name: restaurante
+    restart: always
+    ports:                   # Mapeia a porta 8080 da aplicação para a porta 8080 do host
       - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy  # Garante que o contêiner 'mysql' esteja saudável antes de iniciar o contêiner 'app'.
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
     networks:
-      - mysql-compose-network
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s 
 
+  adminer:            # Gerenciador de bancos de dados via web.
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8081:8080"  # Mapeia a porta 8081 do host para a porta 8080 do contêiner Adminer
+    depends_on:
+      mysql:
+        condition: service_healthy  # Garante que o contêiner 'mysql' esteja saudável antes de iniciar o contêiner 'adminer'.
+    networks:
+      - app-network
+
+# Definindo o volume para persistência de dados do banco de dados
 volumes:
-  mysql_data:
+  mysql-data:
 
+# Definindo a rede personalizada
 networks:
-  mysql-compose-network:
+  app-network:
     driver: bridge
