@@ -27,7 +27,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/buscar/{cpf}")
+    @GetMapping("/{cpf}")
     public ResponseEntity<ClienteResponse> buscarPorCpf(@PathVariable String cpf) {
         var clienteBuscado = buscarCliente.executar(cpf);
         var response = ClienteResponse.fromDomain(clienteBuscado);
