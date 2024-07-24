@@ -4,7 +4,7 @@ import com.fiap.restaurante.core.domain.Cliente;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "tb_clientes")
 public class ClienteEntity {
 
     @Id

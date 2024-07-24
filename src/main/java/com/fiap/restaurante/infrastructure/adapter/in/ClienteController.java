@@ -1,7 +1,7 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
-import com.fiap.restaurante.application.port.out.useCase.BuscarClienteUseCasePortOut;
-import com.fiap.restaurante.application.port.out.useCase.CadastrarClienteUseCasePortOut;
+import com.fiap.restaurante.application.port.out.usecase.BuscarClienteUseCasePortOut;
+import com.fiap.restaurante.application.port.out.usecase.CadastrarClienteUseCasePortOut;
 import com.fiap.restaurante.infrastructure.adapter.in.request.ClienteRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.ClienteResponse;
 import org.springframework.http.HttpStatus;

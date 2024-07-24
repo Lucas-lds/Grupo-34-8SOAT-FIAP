@@ -1,4 +1,4 @@
-package com.fiap.restaurante.application.port.out.useCase;
+package com.fiap.restaurante.application.port.out.usecase;
 
 import com.fiap.restaurante.core.domain.Cliente;
 
