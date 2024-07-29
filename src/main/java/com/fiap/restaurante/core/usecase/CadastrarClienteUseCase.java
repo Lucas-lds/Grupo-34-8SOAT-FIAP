@@ -1,7 +1,7 @@
 package com.fiap.restaurante.core.usecase;
 
 import com.fiap.restaurante.application.port.out.ClienteServicePortOut;
-import com.fiap.restaurante.application.port.out.useCase.CadastrarClienteUseCasePortOut;
+import com.fiap.restaurante.application.port.out.usecase.CadastrarClienteUseCasePortOut;
 import com.fiap.restaurante.core.domain.Cliente;
 
 public class CadastrarClienteUseCase implements CadastrarClienteUseCasePortOut {
