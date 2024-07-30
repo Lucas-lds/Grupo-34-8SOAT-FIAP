@@ -1,5 +1,10 @@
 package com.fiap.restaurante.infrastructure.adapter.in.request;
 
-public record ProdutoRequest(Long id, String nome, String categoria, Double preco, String descricao) {
+import com.fiap.restaurante.core.domain.Produto;
 
+public record ProdutoRequest(String nome, String categoria, Double preco, String descricao) {
+    
+    public Produto toDomain() {
+        return new Produto(null, nome, categoria, preco, descricao);
+    }
 }
