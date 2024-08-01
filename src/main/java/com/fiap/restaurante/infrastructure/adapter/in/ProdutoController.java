@@ -1,10 +1,12 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
 import com.fiap.restaurante.application.port.out.usecase.ProdutoUseCasePortOut;
+import com.fiap.restaurante.core.domain.Produto;
 import com.fiap.restaurante.infrastructure.adapter.in.request.ProdutoRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.ProdutoResponse;
 
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class ProdutoController {
     }
     
     @GetMapping
-    public List<ProdutoResponse> listarProdutos() {
+    public List<Produto> listarProdutos() {
         return produtoUseCasePortOut.listarProdutos();
     }
 
@@ -31,23 +33,30 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/categoria/{categoria}")
-    public ProdutoResponse listarProdutoPorCategoria(@PathVariable String categoria) {
-        return produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
+    @GetMapping("categoria/{categoria}")
+    public ResponseEntity<ProdutoResponse> buscarPorCategoria(@PathVariable String categoria) {
+        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
+        var response = ProdutoResponse.fromDomain(produtoBuscado);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ProdutoResponse listarProdutoPorId(@PathVariable Integer id) {
-        return produtoUseCasePortOut.listarProdutoPorId(id);
+    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Integer id) {
+        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorId(id);
+        var response = ProdutoResponse.fromDomain(produtoBuscado);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ProdutoResponse atualizarProduto(@PathVariable Integer id, @RequestBody ProdutoRequest produto) throws BadRequestException {
-        return produtoUseCasePortOut.atualizarProduto(id, produto);
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Integer id, @RequestBody Produto produtoDetails) throws BadRequestException {
+        Produto updatedProduto = produtoUseCasePortOut.atualizarProduto(id, produtoDetails);
+        return ResponseEntity.ok(updatedProduto);
     }
 
-    @PostMapping
-    public ProdutoResponse criarProduto(@RequestBody ProdutoRequest produto) {
-        return produtoUseCasePortOut.criarProduto(produto);
+    @PostMapping("/cadastrar")
+    public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody ProdutoRequest produtoRequest) {
+        var produtoCadastrado = produtoUseCasePortOut.criarProduto(produtoRequest.toDomain());
+        var response = ProdutoResponse.fromDomain(produtoCadastrado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

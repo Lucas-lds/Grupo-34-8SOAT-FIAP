@@ -1,8 +1,9 @@
 package com.fiap.restaurante.infrastructure.adapter.out;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.ProdutoAdapterPortOut;
@@ -14,44 +15,70 @@ import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoReposit
 public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
 
     private final ProdutoRepository produtoRepository;
-    private final ModelMapper mapper;
 
-    public ProdutoAdapterOut( ProdutoRepository produtoRepository, ModelMapper mapper) {
+    public ProdutoAdapterOut( ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
-        this.mapper = mapper;
-    }
-
-    @Override
-    public Produto atualizarProduto(Integer id, Produto produtoDetails) {
-        var produto = produtoRepository.findById(id);
-        produto.ifPresent(t -> {
-            t.setNome(produtoDetails.getNome());
-            t.setPreco(produtoDetails.getPreco());
-            t.setCategoria(produtoDetails.getCategoria());
-            produtoRepository.save(t);
-        });
-        return mapper.map(produto.get(), Produto.class);
     }
 
     @Override
     public Produto criarProduto(Produto produto) {
-        return mapper.map(produtoRepository.save(mapper.map(produto, ProdutoEntity.class)), Produto.class);
+        return produtoRepository.save(ProdutoEntity.fromDomain(produto)).toDomain();
     }
 
     @Override
     public Produto listarProdutoPorId(Integer id) {
-        return mapper.map(produtoRepository.findById(id), Produto.class);
+        return produtoRepository.findById(id).orElseThrow().toDomain();
     }
 
     @Override
     public Produto listarProdutoPorCategoria(String categoria) {
-        return mapper.map(produtoRepository.findProductByCategoria(categoria), Produto.class);
+        return produtoRepository.findProductByCategoria(categoria).orElseThrow().toDomain();
     }
 
     @Override
     public List<Produto> listarProdutos() {
-        return produtoRepository.findAll().stream()
-            .map(produto -> mapper.map(produto, Produto.class)).toList();
+        List<ProdutoEntity> produtoEntities = produtoRepository.findAll();
+        return produtoEntities.stream()
+                .map(ProdutoEntity::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Produto atualizarProduto(Integer id, Produto produto) {
+        Optional<ProdutoEntity> produtoEntityOptional = produtoRepository.findById(id);
+        if (produtoEntityOptional.isPresent()) {
+            ProdutoEntity produtoEntityExistente = ProdutoEntity.fromDomain(produto);
+            boolean isUpdated = false;
+
+            // Atualizar somente os campos modificados
+            if (produto.getNome() != null) {
+                produtoEntityExistente.setNome(produto.getNome());
+                isUpdated = true;
+            }
+            if (produto.getCategoria() != null) {
+                produtoEntityExistente.setCategoria(produto.getCategoria());
+                isUpdated = true;
+            }
+            if (produto.getPreco() >= 0) {
+                produtoEntityExistente.setPreco(produto.getPreco());
+                isUpdated = true;
+            }
+            if (produto.getDescricao() != null) {
+                produtoEntityExistente.setDescricao(produto.getDescricao());
+                isUpdated = true;
+            }
+
+            if (isUpdated) {
+                // Salvar somente se houver mudanças
+                ProdutoEntity salvo = produtoRepository.save(produtoEntityExistente);
+                return salvo.toDomain();
+            } else {
+                // Retornar a entidade existente se nada foi atualizado
+                return produtoEntityExistente.toDomain();
+            }
+        } else {
+            throw new IllegalArgumentException("Produto com ID " + id + " não encontrado");
+        }
     }
 
     @Override

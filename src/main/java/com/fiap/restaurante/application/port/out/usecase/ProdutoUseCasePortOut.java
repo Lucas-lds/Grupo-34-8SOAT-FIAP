@@ -3,19 +3,18 @@ package com.fiap.restaurante.application.port.out.usecase;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 
-import com.fiap.restaurante.infrastructure.adapter.in.request.ProdutoRequest;
-import com.fiap.restaurante.infrastructure.adapter.in.response.ProdutoResponse;
+import com.fiap.restaurante.core.domain.Produto;
 
 public interface ProdutoUseCasePortOut {
-    List<ProdutoResponse> listarProdutos();
+    List<Produto> listarProdutos();
 
-    ProdutoResponse listarProdutoPorCategoria(String categoria);
+    Produto listarProdutoPorCategoria(String categoria);
 
-    ProdutoResponse listarProdutoPorId(Integer id);
+    Produto listarProdutoPorId(Integer id);
 
-    ProdutoResponse criarProduto(ProdutoRequest produto);
+    Produto criarProduto(Produto produto);
 
-    ProdutoResponse atualizarProduto(Integer id, ProdutoRequest produto) throws BadRequestException;
+    Produto atualizarProduto(Integer id, Produto produto) throws BadRequestException;
 
     void deletarPorId(Integer id);
 
