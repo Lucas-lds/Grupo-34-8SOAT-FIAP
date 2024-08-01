@@ -1,8 +1,12 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
-import com.fiap.restaurante.application.port.in.ProdutoService;
+import com.fiap.restaurante.application.port.out.usecase.ProdutoUseCasePortOut;
 import com.fiap.restaurante.core.domain.Produto;
+import com.fiap.restaurante.infrastructure.adapter.in.request.ProdutoRequest;
+import com.fiap.restaurante.infrastructure.adapter.in.response.ProdutoResponse;
 
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,37 +15,48 @@ import java.util.List;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
+
+    private final ProdutoUseCasePortOut produtoUseCasePortOut;
+
+    public ProdutoController(ProdutoUseCasePortOut produtoUseCasePortOut){
+        this.produtoUseCasePortOut = produtoUseCasePortOut;
+    }
     
-    private final ProdutoService produtoService;
-
-    public ProdutoController(ProdutoService produtoService) {
-        this.produtoService = produtoService;
-    }
-
     @GetMapping
-    public List<Produto> getAllProdutos() {
-        return produtoService.getAllProdutos();
-    }
-
-    @GetMapping("/categoria/{categoria}")
-    public List<Produto> getProdutosByCategoria(@PathVariable String categoria) {
-        return produtoService.getProdutosByCategoria(categoria);
-    }
-
-    @PostMapping
-    public Produto createProduto(@RequestBody Produto produto) {
-        return produtoService.createProduto(produto);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Produto> updateProduto(@PathVariable Long id, @RequestBody Produto produtoDetails) {
-        Produto updatedProduto = produtoService.updateProduto(id, produtoDetails);
-        return ResponseEntity.ok(updatedProduto);
+    public List<Produto> listarProdutos() {
+        return produtoUseCasePortOut.listarProdutos();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduto(@PathVariable Long id) {
-        produtoService.deleteProduto(id);
+    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id) {
+        produtoUseCasePortOut.deletarPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("categoria/{categoria}")
+    public ResponseEntity<ProdutoResponse> buscarPorCategoria(@PathVariable String categoria) {
+        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
+        var response = ProdutoResponse.fromDomain(produtoBuscado);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Integer id) {
+        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorId(id);
+        var response = ProdutoResponse.fromDomain(produtoBuscado);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Integer id, @RequestBody Produto produtoDetails) throws BadRequestException {
+        Produto updatedProduto = produtoUseCasePortOut.atualizarProduto(id, produtoDetails);
+        return ResponseEntity.ok(updatedProduto);
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody ProdutoRequest produtoRequest) {
+        var produtoCadastrado = produtoUseCasePortOut.criarProduto(produtoRequest.toDomain());
+        var response = ProdutoResponse.fromDomain(produtoCadastrado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
