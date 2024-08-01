@@ -40,7 +40,7 @@ public class PedidoController {
     
 
     @GetMapping("/{id}")
-    public PedidoResponse getMethodName(@PathVariable Integer id) {
+    public PedidoResponse getPedidoById(@PathVariable Integer id) {
         return pedidoUseCasePortOut.listarPedidoPorId(id);
     }
     

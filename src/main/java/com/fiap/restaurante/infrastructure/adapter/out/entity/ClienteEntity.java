@@ -9,6 +9,7 @@ public class ClienteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente")
     private Integer id;
 
     @Column(name = "cpf")
