@@ -18,17 +18,16 @@ CREATE TABLE tb_pedidos (
     id_pedido INT PRIMARY KEY AUTO_INCREMENT,   -- Identificador único do pedido
     id_cliente INT NOT NULL,                   -- Identificador do cliente (chave estrangeira)
     data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Data e hora do pedido
-    status_ VARCHAR(50),                            -- Status do pedido
-    preco_total DECIMAL(10, 2) NOT NULL,            -- Preço unitário do produto no momento do pedido                        
+    status_ VARCHAR(50),                            -- Status do pedido                      
     FOREIGN KEY (id_cliente) REFERENCES tb_clientes(id_cliente)  -- Relacionamento com a tabela Clientes
 );
 
 CREATE TABLE tb_pedido_produtos (
-    id INT PRIMARY KEY AUTO_INCREMENT,    -- Identificador único do item do pedido
+    id_pedido_produto INT PRIMARY KEY AUTO_INCREMENT,    -- Identificador único do item do pedido
     id_pedido INT NOT NULL,                   -- Identificador do pedido (chave estrangeira)
     id_produto INT NOT NULL,                  -- Identificador do produto (chave estrangeira)
     quantidade INT NOT NULL,                 -- Quantidade do produto no pedido
-    preco_unitario DECIMAL(10, 2) NOT NULL,   -- Preço unitário do produto no momento do pedido
     FOREIGN KEY (id_pedido) REFERENCES tb_pedidos(id_pedido),  -- Relacionamento com a tabela Pedidos
     FOREIGN KEY (id_produto) REFERENCES tb_produtos(id_produto)  -- Relacionamento com a tabela Produtos
+
 );
