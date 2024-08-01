@@ -1,29 +1,27 @@
 package com.fiap.restaurante.application.service;
 
-import com.fiap.restaurante.application.port.out.BuscarClienteAdapterPortOut;
-import com.fiap.restaurante.application.port.out.CadastrarClienteAdapterPortOut;
+import com.fiap.restaurante.application.port.out.ClienteAdapterPortOut;
 import com.fiap.restaurante.application.port.out.ClienteServicePortOut;
 import com.fiap.restaurante.core.domain.Cliente;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ClienteService implements ClienteServicePortOut {
 
-    private final CadastrarClienteAdapterPortOut cadastrarClienteAdapterPortOut;
-    private final BuscarClienteAdapterPortOut buscarClienteAdapterOut;
+    private final ClienteAdapterPortOut clienteAdapterPortOut;
 
-    public ClienteService(CadastrarClienteAdapterPortOut cadastrarClienteAdapterPortOut, BuscarClienteAdapterPortOut buscarClienteAdapterOut) {
-        this.cadastrarClienteAdapterPortOut = cadastrarClienteAdapterPortOut;
-        this.buscarClienteAdapterOut = buscarClienteAdapterOut;
+    public ClienteService(ClienteAdapterPortOut clienteAdapterPortOut) {
+        this.clienteAdapterPortOut = clienteAdapterPortOut;
     }
 
     @Override
     public Cliente cadastrar(Cliente cliente) {
-        return cadastrarClienteAdapterPortOut.cadastrar(cliente);
+        return clienteAdapterPortOut.cadastrar(cliente);
     }
 
+    @Override
     public Cliente buscar(String cpf) {
-        return buscarClienteAdapterOut.buscar(cpf);
+        return clienteAdapterPortOut.buscar(cpf);
     }
 
 }

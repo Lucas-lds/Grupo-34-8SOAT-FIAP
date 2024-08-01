@@ -5,12 +5,14 @@ public class Cliente {
     private String cpf;
     private String nome;
     private String email;
+    private String telefone;
 
-    public Cliente(Integer idCliente, String cpf, String nome, String email) {
+    public Cliente(Integer idCliente, String cpf, String nome, String email, String telefone) {
         this.idCliente = idCliente;
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
+        this.telefone = telefone;
     }
 
     public Integer getIdCliente() {
@@ -29,4 +31,7 @@ public class Cliente {
         return email;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
 }

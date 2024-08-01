@@ -1,10 +1,8 @@
 package com.fiap.restaurante.infrastructure.configuration;
 
 import com.fiap.restaurante.application.port.out.ClienteServicePortOut;
-import com.fiap.restaurante.application.port.out.usecase.BuscarClienteUseCasePortOut;
-import com.fiap.restaurante.application.port.out.usecase.CadastrarClienteUseCasePortOut;
-import com.fiap.restaurante.core.usecase.BuscarClienteUseCase;
-import com.fiap.restaurante.core.usecase.CadastrarClienteUseCase;
+import com.fiap.restaurante.application.port.out.usecase.ClienteUseCasePortOut;
+import com.fiap.restaurante.core.usecase.ClienteUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,12 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class UseCaseConfig {
 
     @Bean
-    public CadastrarClienteUseCasePortOut cadastrarClienteUseCase(ClienteServicePortOut clienteService) {
-        return new CadastrarClienteUseCase(clienteService);
+    public ClienteUseCasePortOut clienteUseCase(ClienteServicePortOut clienteService) {
+        return new ClienteUseCase(clienteService);
     }
 
-    @Bean
-    public BuscarClienteUseCasePortOut buscarClienteUseCase(ClienteServicePortOut clienteService) {
-        return new BuscarClienteUseCase(clienteService);
-    }
 }
