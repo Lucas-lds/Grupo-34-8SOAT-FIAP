@@ -4,7 +4,7 @@ CREATE TABLE tb_clientes (
     email VARCHAR(100) UNIQUE NOT NULL,        -- Email do cliente
     telefone VARCHAR(15),                      -- Telefone do cliente
     cpf VARCHAR(14),
-    DataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP  -- Data e hora de cadastro
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP  -- Data e hora de cadastro
 );
 
 CREATE TABLE tb_produtos (
@@ -17,10 +17,10 @@ CREATE TABLE tb_produtos (
 
 CREATE TABLE tb_pedidos (
     PedidoID INT PRIMARY KEY AUTO_INCREMENT,        -- Identificador único do pedido
-    cliente_id INT NOT NULL,                         -- Identificador do cliente (chave estrangeira)
+    id_cliente INT NOT NULL,                         -- Identificador do cliente (chave estrangeira)
     DataPedido DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Data e hora do pedido
     Status VARCHAR(50),                             -- Status do pedido
-    FOREIGN KEY (cliente_id) REFERENCES tb_clientes(id)  -- Relacionamento com a tabela Clientes
+    FOREIGN KEY (id_cliente) REFERENCES tb_clientes(id)  -- Relacionamento com a tabela Clientes
 );
 
 CREATE TABLE tb_itens_pedidos (
