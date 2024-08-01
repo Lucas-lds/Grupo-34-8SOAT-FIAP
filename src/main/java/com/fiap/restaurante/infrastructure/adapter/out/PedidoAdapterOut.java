@@ -3,6 +3,7 @@ package com.fiap.restaurante.infrastructure.adapter.out;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.PedidoAdapterPortOut;
 import com.fiap.restaurante.core.domain.OrderStatus;
@@ -10,6 +11,7 @@ import com.fiap.restaurante.core.domain.Pedido;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoRepository;
 
+@Component
 public class PedidoAdapterOut implements PedidoAdapterPortOut {
 
     private final PedidoRepository pedidoRepository;
@@ -24,7 +26,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     public Pedido atualizarStatusPedido(OrderStatus status, Integer id) {
         var pedido = pedidoRepository.findById(id);
         pedido.ifPresent(t -> {
-            t.setStatus(status);
+            t.setStatus_(status);
             pedidoRepository.save(t);
         });
         return mapper.map(pedido.get(), Pedido.class);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.coyote.BadRequestException;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.PedidoServicePortOut;
 import com.fiap.restaurante.application.port.out.usecase.PedidoUseCasePortOut;
@@ -11,6 +12,7 @@ import com.fiap.restaurante.core.domain.Pedido;
 import com.fiap.restaurante.infrastructure.adapter.in.request.PedidoRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.PedidoResponse;
 
+@Component
 public class PedidoUseCase implements PedidoUseCasePortOut{
 
     private final PedidoServicePortOut pedidoServicePortOut;
