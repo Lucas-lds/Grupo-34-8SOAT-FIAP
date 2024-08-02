@@ -12,8 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pedido {
+    
     private Integer id;
     private OrderStatus status;
     private Integer idCliente;
-    private List<Produto> ListaProdutos;
+    private List<PedidoProduto> listaPedidoProdutos;
+
+    public Pedido(Integer idCliente, List<PedidoProduto> list) {
+        this.idCliente = idCliente;
+        this.listaPedidoProdutos = list;
+    }
 }

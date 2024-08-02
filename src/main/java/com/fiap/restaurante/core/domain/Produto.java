@@ -1,4 +1,8 @@
 package com.fiap.restaurante.core.domain;
+
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Produto {
     private Integer idProduto;
     private String nome;
@@ -12,6 +16,10 @@ public class Produto {
         this.categoria = categoria;
         this.preco = preco;
         this.descricao = descricao;
+    }
+
+    public Produto(Integer idProduto){
+        this.idProduto = idProduto;
     }
 
     public Integer getIdProduto() {

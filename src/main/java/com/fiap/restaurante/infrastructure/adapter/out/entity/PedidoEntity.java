@@ -2,8 +2,11 @@ package com.fiap.restaurante.infrastructure.adapter.out.entity;
 
 import java.util.Set;
 
+import com.fiap.restaurante.core.domain.Cliente;
 import com.fiap.restaurante.core.domain.OrderStatus;
+import com.fiap.restaurante.core.domain.Pedido;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -15,6 +18,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,17 +40,11 @@ public class PedidoEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status_;
 
-    @JoinColumn(name = "cliente_id")
-    @Column(name = "id_cliente")
-    private Integer idCliente;
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private ClienteEntity cliente;
     
-    @ManyToMany
-    @JoinTable(
-        name = "tb_pedido_produtos", 
-        joinColumns = @JoinColumn(name = "id_produto"), 
-        inverseJoinColumns = @JoinColumn(name = "id_pedido")
-    )
-    @ElementCollection(targetClass = ProdutoEntity.class)
-    private Set<ProdutoEntity> ListaProdutos;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoProdutoEntity> pedidoProdutos;
 
 }

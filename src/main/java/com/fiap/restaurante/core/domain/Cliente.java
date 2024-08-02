@@ -15,6 +15,10 @@ public class Cliente {
         this.telefone = telefone;
     }
 
+    public Cliente(Integer idCliente){
+        this.idCliente = idCliente;
+    }
+
     public Integer getIdCliente() {
         return idCliente;
     }
