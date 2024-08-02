@@ -9,6 +9,7 @@ public class ProdutoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_produto")
     private Integer id;
 
     @Column(name = "nome")

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.PedidoServicePortOut;
 import com.fiap.restaurante.application.port.out.usecase.PedidoUseCasePortOut;
-import com.fiap.restaurante.core.domain.Pedido;
 import com.fiap.restaurante.infrastructure.adapter.in.request.PedidoRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.PedidoResponse;
 
@@ -31,7 +30,7 @@ public class PedidoUseCase implements PedidoUseCasePortOut{
 
     @Override
     public PedidoResponse criarPedido(PedidoRequest pedido) {
-        return mapper.map(pedidoServicePortOut.criarPedido(mapper.map(pedido, Pedido.class)), PedidoResponse.class);
+        return PedidoResponse.fromDomain(pedidoServicePortOut.criarPedido(pedido.toDomain()));
     }
 
     @Override
