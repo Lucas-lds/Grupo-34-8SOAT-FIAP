@@ -18,7 +18,7 @@ public class ProdutoUseCase implements ProdutoUseCasePortOut {
 
 
     @Override
-    public Produto atualizarProduto(Integer id, Produto produto) throws BadRequestException {
+    public Produto atualizarProduto(Long id, Produto produto) throws BadRequestException {
         return produtoService.atualizarProduto(id, produto);
     }
 
@@ -28,12 +28,12 @@ public class ProdutoUseCase implements ProdutoUseCasePortOut {
     }
 
     @Override
-    public void deletarPorId(Integer id) {
+    public void deletarPorId(Long id) {
         produtoService.deletarPorId(id);
     }
 
     @Override
-    public Produto listarProdutoPorId(Integer id) {
+    public Produto listarProdutoPorId(Long id) {
         return produtoService.listarProdutoPorId(id);
     }
 

@@ -8,11 +8,11 @@ import com.fiap.restaurante.infrastructure.adapter.in.request.PedidoRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.PedidoResponse;
 
 public interface PedidoUseCasePortOut {
-    PedidoResponse atualizarStatusPedido(Integer status, Integer id) throws BadRequestException;
+    PedidoResponse atualizarStatusPedido(Integer status, Long id) throws BadRequestException;
 
     PedidoResponse criarPedido(PedidoRequest pedido);
 
-    PedidoResponse listarPedidoPorId(Integer id);
+    PedidoResponse listarPedidoPorId(Long id);
 
     List<PedidoResponse> listarPedidos();
 }

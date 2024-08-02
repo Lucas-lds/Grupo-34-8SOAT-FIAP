@@ -28,7 +28,7 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
         produtoUseCasePortOut.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
@@ -41,14 +41,14 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Integer id) {
+    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Long id) {
         var produtoBuscado = produtoUseCasePortOut.listarProdutoPorId(id);
         var response = ProdutoResponse.fromDomain(produtoBuscado);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizarProduto(@PathVariable Integer id, @RequestBody Produto produtoDetails) throws BadRequestException {
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @RequestBody Produto produtoDetails) throws BadRequestException {
         Produto updatedProduto = produtoUseCasePortOut.atualizarProduto(id, produtoDetails);
         return ResponseEntity.ok(updatedProduto);
     }

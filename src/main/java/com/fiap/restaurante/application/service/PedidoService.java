@@ -20,7 +20,7 @@ public class PedidoService implements PedidoServicePortOut{
     }
 
     @Override
-    public Pedido atualizarStatusPedido(Integer status, Integer id) throws BadRequestException {
+    public Pedido atualizarStatusPedido(Integer status, Long id) throws BadRequestException {
         if( status == 2)
             return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.PREPARING, id);
         else if(status == 3)
@@ -40,7 +40,7 @@ public class PedidoService implements PedidoServicePortOut{
     }
 
     @Override
-    public Pedido listarPedidoPorId(Integer id) {
+    public Pedido listarPedidoPorId(Long id) {
         return pedidoAdapterPortOut.listarPedidoPorId(id);
     }
 

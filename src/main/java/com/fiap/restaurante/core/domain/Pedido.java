@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Pedido {
     
-    private Integer id;
+    private Long id;
     private OrderStatus status;
-    private Integer idCliente;
+    private Long idCliente;
     private List<PedidoProduto> listaPedidoProdutos;
 
-    public Pedido(Integer idCliente, List<PedidoProduto> list) {
+    public Pedido(Long idCliente, List<PedidoProduto> list) {
         this.idCliente = idCliente;
         this.listaPedidoProdutos = list;
     }

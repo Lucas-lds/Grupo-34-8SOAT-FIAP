@@ -1,13 +1,13 @@
 package com.fiap.restaurante.core.domain;
 
 public class Cliente {
-    private Integer idCliente;
+    private Long idCliente;
     private String cpf;
     private String nome;
     private String email;
     private String telefone;
 
-    public Cliente(Integer idCliente, String cpf, String nome, String email, String telefone) {
+    public Cliente(Long idCliente, String cpf, String nome, String email, String telefone) {
         this.idCliente = idCliente;
         this.cpf = cpf;
         this.nome = nome;
@@ -15,11 +15,11 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public Cliente(Integer idCliente){
+    public Cliente(Long idCliente){
         this.idCliente = idCliente;
     }
 
-    public Integer getIdCliente() {
+    public Long getIdCliente() {
         return idCliente;
     }
 

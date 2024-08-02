@@ -31,7 +31,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     }
 
     @Override
-    public Pedido atualizarStatusPedido(OrderStatus status, Integer id) {
+    public Pedido atualizarStatusPedido(OrderStatus status, Long id) {
         var pedido = pedidoRepository.findById(id);
         pedido.ifPresent(t -> {
             t.setStatus_(status);
@@ -43,7 +43,6 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     @Override
     public Pedido criarPedido(Pedido pedido) {
         var pedidoEntity = new PedidoEntity();
-        pedidoEntity.setId(pedido.getId());
         pedidoEntity.setStatus_(pedido.getStatus());
         pedidoEntity.setCliente(ClienteEntity.fromDomain(new Cliente(pedido.getIdCliente())));
         var pedidoProdutos = new HashSet<PedidoProdutoEntity>();
@@ -52,7 +51,6 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
             entity.setPedido(pedidoEntity);
             entity.setProduto(ProdutoEntity.fromDomain(pedidoProduto.getProduto()));
             entity.setQuantidade(pedidoProduto.getQuantidade());
-            pedidoProdutoRepository.save(entity);
             pedidoProdutos.add(entity);
         });
         pedidoEntity.setPedidoProdutos(pedidoProdutos);
@@ -60,7 +58,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     }
 
     @Override
-    public Pedido listarPedidoPorId(Integer id) {
+    public Pedido listarPedidoPorId(Long id) {
         return mapper.map(pedidoRepository.findById(id), Pedido.class);
     }
 

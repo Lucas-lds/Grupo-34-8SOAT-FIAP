@@ -29,7 +29,7 @@ public class PedidoController {
     }
 
     @PutMapping("/{id}")
-    public PedidoResponse atualizarStatusPedido(@PathVariable Integer id, @RequestBody Integer status) throws BadRequestException {
+    public PedidoResponse atualizarStatusPedido(@PathVariable Long id, @RequestBody Integer status) throws BadRequestException {
         return pedidoUseCasePortOut.atualizarStatusPedido(status, id);
     }
 
@@ -40,7 +40,7 @@ public class PedidoController {
     
 
     @GetMapping("/{id}")
-    public PedidoResponse getPedidoById(@PathVariable Integer id) {
+    public PedidoResponse getPedidoById(@PathVariable Long id) {
         return pedidoUseCasePortOut.listarPedidoPorId(id);
     }
     

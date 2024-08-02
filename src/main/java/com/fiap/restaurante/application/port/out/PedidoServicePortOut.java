@@ -7,11 +7,11 @@ import org.apache.coyote.BadRequestException;
 import com.fiap.restaurante.core.domain.Pedido;
 
 public interface PedidoServicePortOut {
-    Pedido atualizarStatusPedido(Integer status, Integer id) throws BadRequestException;
+    Pedido atualizarStatusPedido(Integer status, Long id) throws BadRequestException;
 
     Pedido criarPedido(Pedido pedido);
 
-    Pedido listarPedidoPorId(Integer id);
+    Pedido listarPedidoPorId(Long id);
 
     List<Pedido> listarPedidos();
 }

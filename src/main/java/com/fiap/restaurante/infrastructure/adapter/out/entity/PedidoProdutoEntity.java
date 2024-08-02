@@ -1,8 +1,5 @@
 package com.fiap.restaurante.infrastructure.adapter.out.entity;
 
-import com.fiap.restaurante.core.domain.Pedido;
-import com.fiap.restaurante.core.domain.PedidoProduto;
-
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -10,10 +7,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

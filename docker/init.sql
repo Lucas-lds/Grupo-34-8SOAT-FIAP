@@ -1,5 +1,5 @@
 CREATE TABLE tb_clientes (
-    id_cliente INT PRIMARY KEY AUTO_INCREMENT,  -- Identificador único do cliente
+    id_cliente BIGINT PRIMARY KEY AUTO_INCREMENT,  -- Identificador único do cliente
     nome VARCHAR(100) NOT NULL,                -- Nome do cliente
     email VARCHAR(100) UNIQUE NOT NULL,        -- Email do cliente
     telefone VARCHAR(15),                      -- Telefone do cliente
@@ -8,7 +8,7 @@ CREATE TABLE tb_clientes (
 );
 
 CREATE TABLE tb_produtos (
-    id_produto INT PRIMARY KEY AUTO_INCREMENT,  -- Identificador único do produto
+    id_produto BIGINT PRIMARY KEY AUTO_INCREMENT,  -- Identificador único do produto
     nome VARCHAR(100) NOT NULL,               -- Nome do produto
     categoria TEXT,                           -- Categoria do produto
     preco DECIMAL(10, 2) NOT NULL,            -- Preço do produto
@@ -16,16 +16,16 @@ CREATE TABLE tb_produtos (
 );
 
 CREATE TABLE tb_pedidos (
-    id_pedido INT PRIMARY KEY AUTO_INCREMENT,   -- Identificador único do pedido
-    id_cliente INT NOT NULL,                   -- Identificador do cliente (chave estrangeira)
+    id_pedido BIGINT PRIMARY KEY AUTO_INCREMENT,   -- Identificador único do pedido
+    id_cliente BIGINT NOT NULL,                   -- Identificador do cliente (chave estrangeira)
     data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Data e hora do pedido
     status_ VARCHAR(50),                            -- Status do pedido                      
     FOREIGN KEY (id_cliente) REFERENCES tb_clientes(id_cliente)  -- Relacionamento com a tabela Clientes
 );
 
 CREATE TABLE tb_pedido_produtos (
-    id_pedido INT NOT NULL,                   -- Identificador do pedido (chave estrangeira)
-    id_produto INT NOT NULL,                  -- Identificador do produto (chave estrangeira)
+    id_pedido BIGINT NOT NULL,                   -- Identificador do pedido (chave estrangeira)
+    id_produto BIGINT NOT NULL,                  -- Identificador do produto (chave estrangeira)
     quantidade INT NOT NULL,                 -- Quantidade do produto no pedido
     PRIMARY KEY (id_pedido, id_produto),
     FOREIGN KEY (id_pedido) REFERENCES tb_pedidos(id_pedido),  -- Relacionamento com a tabela Pedidos

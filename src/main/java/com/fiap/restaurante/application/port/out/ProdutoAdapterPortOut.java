@@ -10,11 +10,11 @@ public interface ProdutoAdapterPortOut {
 
     Produto listarProdutoPorCategoria(String categoria);
 
-    Produto listarProdutoPorId(Integer id);
+    Produto listarProdutoPorId(Long id);
 
     Produto criarProduto(Produto produto);
 
-    Produto atualizarProduto(Integer id, Produto produto);
+    Produto atualizarProduto(Long id, Produto produto);
 
-    void deletarPorId(Integer id);
+    void deletarPorId(Long id);
 }

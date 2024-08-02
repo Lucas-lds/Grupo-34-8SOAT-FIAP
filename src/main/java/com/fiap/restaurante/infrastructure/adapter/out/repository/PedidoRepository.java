@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoEntity;
 
-public interface PedidoRepository extends JpaRepository<PedidoEntity, Integer>{
+public interface PedidoRepository extends JpaRepository<PedidoEntity, Long>{
     
 }
