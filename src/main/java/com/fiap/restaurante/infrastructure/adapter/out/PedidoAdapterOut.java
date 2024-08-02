@@ -14,16 +14,19 @@ import com.fiap.restaurante.infrastructure.adapter.out.entity.ClienteEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoProdutoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.ProdutoEntity;
+import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoProdutoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoRepository;
 
 @Component
 public class PedidoAdapterOut implements PedidoAdapterPortOut {
 
     private final PedidoRepository pedidoRepository;
+    private final PedidoProdutoRepository pedidoProdutoRepository;
     private final ModelMapper mapper;
 
-    public PedidoAdapterOut( PedidoRepository pedidoRepository, ModelMapper mapper) {
+    public PedidoAdapterOut( PedidoRepository pedidoRepository, PedidoProdutoRepository pedidoProdutoRepository, ModelMapper mapper) {
         this.pedidoRepository = pedidoRepository;
+        this.pedidoProdutoRepository = pedidoProdutoRepository;
         this.mapper = mapper;
     }
 
@@ -40,17 +43,19 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     @Override
     public Pedido criarPedido(Pedido pedido) {
         var pedidoEntity = new PedidoEntity();
+        pedidoEntity.setId(pedido.getId());
+        pedidoEntity.setStatus_(pedido.getStatus());
+        pedidoEntity.setCliente(ClienteEntity.fromDomain(new Cliente(pedido.getIdCliente())));
         var pedidoProdutos = new HashSet<PedidoProdutoEntity>();
         pedido.getListaPedidoProdutos().forEach((pedidoProduto) -> {
             var entity = new PedidoProdutoEntity();
             entity.setPedido(pedidoEntity);
             entity.setProduto(ProdutoEntity.fromDomain(pedidoProduto.getProduto()));
             entity.setQuantidade(pedidoProduto.getQuantidade());
+            pedidoProdutoRepository.save(entity);
             pedidoProdutos.add(entity);
         });
-        pedidoEntity.setId(pedido.getId());
-        pedidoEntity.setStatus_(pedido.getStatus());
-        pedidoEntity.setCliente(ClienteEntity.fromDomain(new Cliente(pedido.getIdCliente())));
+        pedidoEntity.setPedidoProdutos(pedidoProdutos);
         return mapper.map(pedidoRepository.save(pedidoEntity), Pedido.class);
     }
 
