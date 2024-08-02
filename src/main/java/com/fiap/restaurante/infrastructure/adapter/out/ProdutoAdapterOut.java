@@ -26,7 +26,7 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public Produto listarProdutoPorId(Integer id) {
+    public Produto listarProdutoPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow().toDomain();
     }
 
@@ -44,7 +44,7 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public Produto atualizarProduto(Integer id, Produto produto) {
+    public Produto atualizarProduto(Long id, Produto produto) {
         Optional<ProdutoEntity> produtoEntityOptional = produtoRepository.findById(id);
         if (produtoEntityOptional.isPresent()) {
             ProdutoEntity produtoEntityExistente = ProdutoEntity.fromDomain(produto);
@@ -82,7 +82,7 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public void deletarPorId(Integer id) {
+    public void deletarPorId(Long id) {
         produtoRepository.deleteById(id);
     }
     

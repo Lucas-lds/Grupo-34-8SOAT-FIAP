@@ -17,7 +17,7 @@ public class ProdutoService implements ProdutoServicePortOut{
     }
 
     @Override
-    public Produto atualizarProduto(Integer id, Produto produto) throws BadRequestException {
+    public Produto atualizarProduto(Long id, Produto produto) throws BadRequestException {
         return produtoAdapterPortOut.atualizarProduto(id, produto);
     }
 
@@ -27,7 +27,7 @@ public class ProdutoService implements ProdutoServicePortOut{
     }
 
     @Override
-    public Produto listarProdutoPorId(Integer id) {
+    public Produto listarProdutoPorId(Long id) {
         return produtoAdapterPortOut.listarProdutoPorId(id);
     }
 
@@ -42,7 +42,7 @@ public class ProdutoService implements ProdutoServicePortOut{
     }
 
     @Override
-    public void deletarPorId(Integer id) {
+    public void deletarPorId(Long id) {
         produtoAdapterPortOut.deletarPorId(id);
     }
 }

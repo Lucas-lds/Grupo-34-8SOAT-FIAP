@@ -10,7 +10,7 @@ public class ClienteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
-    private Integer id;
+    private Long id;
 
     @Column(name = "cpf")
     private String cpf;
@@ -27,7 +27,7 @@ public class ClienteEntity {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(Integer id, String cpf, String nome, String email, String telefone) {
+    public ClienteEntity(Long id, String cpf, String nome, String email, String telefone) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;

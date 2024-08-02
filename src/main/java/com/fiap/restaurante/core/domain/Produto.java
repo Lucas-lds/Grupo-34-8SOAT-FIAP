@@ -4,13 +4,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class Produto {
-    private Integer idProduto;
+    private Long idProduto;
     private String nome;
     private String categoria;
     private double preco;
     private String descricao;
 
-    public Produto(Integer idProduto, String nome, String categoria, double preco, String descricao) {
+    public Produto(Long idProduto, String nome, String categoria, double preco, String descricao) {
         this.idProduto = idProduto;
         this.nome = nome;
         this.categoria = categoria;
@@ -18,11 +18,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public Produto(Integer idProduto){
+    public Produto(Long idProduto){
         this.idProduto = idProduto;
     }
 
-    public Integer getIdProduto() {
+    public Long getIdProduto() {
         return idProduto;
     }
 

@@ -10,7 +10,7 @@ public class ProdutoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_produto")
-    private Integer id;
+    private Long id;
 
     @Column(name = "nome")
     private String nome;
@@ -27,7 +27,7 @@ public class ProdutoEntity {
     public ProdutoEntity() {
     }
 
-    public ProdutoEntity(Integer id, String nome, String categoria, double preco, String descricao) {
+    public ProdutoEntity(Long id, String nome, String categoria, double preco, String descricao) {
         this.id = id;
         this.nome = nome;
         this.categoria = categoria;
@@ -43,7 +43,7 @@ public class ProdutoEntity {
         return new ProdutoEntity(produto.getIdProduto(), produto.getNome(), produto.getCategoria(), produto.getPreco(), produto.getDescricao());
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
