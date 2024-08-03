@@ -1,10 +1,12 @@
 package com.fiap.restaurante.infrastructure.adapter.out.entity;
 
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,17 +20,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_pedido_produtos")
 public class PedidoProdutoEntity {
-    
-    @EmbeddedId
-    private PedidoProdutoPK id = new PedidoProdutoPK();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pedido_produto")
+    private Long id;
 
     @ManyToOne
-    @MapsId("idPedido")
     @JoinColumn(name = ("id_pedido"))
     private PedidoEntity pedido;
 
     @ManyToOne
-    @MapsId("idProduto")
     @JoinColumn(name = ("id_produto"))
     private ProdutoEntity produto;
 
