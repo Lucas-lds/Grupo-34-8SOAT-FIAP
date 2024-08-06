@@ -24,23 +24,27 @@ public class ProdutoEntity {
     @Column(name = "descricao")
     private String descricao;
 
+    @Column(name = "imagemUrl")
+    private String imagemUrl;
+
     public ProdutoEntity() {
     }
 
-    public ProdutoEntity(Long id, String nome, String categoria, double preco, String descricao) {
+    public ProdutoEntity(Long id, String nome, String categoria, double preco, String descricao, String imagemUrl) {
         this.id = id;
         this.nome = nome;
         this.categoria = categoria;
         this.preco = preco;
         this.descricao = descricao;
+        this.imagemUrl = imagemUrl;
     }
 
     public Produto toDomain() {
-        return new Produto(id, nome, categoria, preco, descricao);
+        return new Produto(id, nome, categoria, preco, descricao, imagemUrl);
     }
 
     public static ProdutoEntity fromDomain(Produto produto) {
-        return new ProdutoEntity(produto.getIdProduto(), produto.getNome(), produto.getCategoria(), produto.getPreco(), produto.getDescricao());
+        return new ProdutoEntity(produto.getIdProduto(), produto.getNome(), produto.getCategoria(), produto.getPreco(), produto.getDescricao(), produto.getImagemUrl());
     }
 
     public void setId(Long id) {
@@ -61,5 +65,9 @@ public class ProdutoEntity {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }

@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import java.util.Optional;
 import org.springframework.stereotype.Component;
-
 import com.fiap.restaurante.application.port.out.ProdutoAdapterPortOut;
 import com.fiap.restaurante.core.domain.Produto;
+import com.fiap.restaurante.infrastructure.adapter.in.validation.ProdutoValidation;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.ProdutoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoRepository;
 
@@ -22,6 +22,7 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
 
     @Override
     public Produto criarProduto(Produto produto) {
+        ProdutoValidation.validate(produto.getCategoria());
         return produtoRepository.save(ProdutoEntity.fromDomain(produto)).toDomain();
     }
 
@@ -31,8 +32,12 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public Produto listarProdutoPorCategoria(String categoria) {
-        return produtoRepository.findProductByCategoria(categoria).orElseThrow().toDomain();
+    public List<Produto> listarProdutoPorCategoria(String categoria) {
+        ProdutoValidation.validate(categoria);
+        List<ProdutoEntity> produtoEntities = produtoRepository.findProductByCategoria(categoria);
+        return produtoEntities.stream()
+                .map(ProdutoEntity::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -56,6 +61,7 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
                 isUpdated = true;
             }
             if (produto.getCategoria() != null) {
+                ProdutoValidation.validate(produto.getCategoria());
                 produtoEntityExistente.setCategoria(produto.getCategoria());
                 isUpdated = true;
             }
@@ -65,6 +71,10 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
             }
             if (produto.getDescricao() != null) {
                 produtoEntityExistente.setDescricao(produto.getDescricao());
+                isUpdated = true;
+            }
+            if (produto.getImagemUrl() != null) {
+                produtoEntityExistente.setImagemUrl(produto.getImagemUrl());
                 isUpdated = true;
             }
 

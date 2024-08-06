@@ -38,7 +38,7 @@ public class ProdutoUseCase implements ProdutoUseCasePortOut {
     }
 
     @Override
-    public Produto listarProdutoPorCategoria(String categoria) {
+    public List<Produto> listarProdutoPorCategoria(String categoria) {
         return produtoService.listarProdutoPorCategoria(categoria);
     }
 

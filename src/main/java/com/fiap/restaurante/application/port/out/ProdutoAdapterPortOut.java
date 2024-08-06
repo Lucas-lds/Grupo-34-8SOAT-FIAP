@@ -8,7 +8,7 @@ public interface ProdutoAdapterPortOut {
 
     List<Produto> listarProdutos();
 
-    Produto listarProdutoPorCategoria(String categoria);
+    List<Produto> listarProdutoPorCategoria(String categoria);
 
     Produto listarProdutoPorId(Long id);
 

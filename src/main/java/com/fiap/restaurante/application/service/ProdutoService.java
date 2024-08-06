@@ -32,7 +32,7 @@ public class ProdutoService implements ProdutoServicePortOut{
     }
 
     @Override
-    public Produto listarProdutoPorCategoria(String categoria) {
+    public List<Produto> listarProdutoPorCategoria(String categoria) {
         return produtoAdapterPortOut.listarProdutoPorCategoria(categoria);
     }
 

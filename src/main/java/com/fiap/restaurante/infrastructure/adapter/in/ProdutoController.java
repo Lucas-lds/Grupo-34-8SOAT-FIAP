@@ -34,10 +34,8 @@ public class ProdutoController {
     }
 
     @GetMapping("categoria/{categoria}")
-    public ResponseEntity<ProdutoResponse> buscarPorCategoria(@PathVariable String categoria) {
-        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
-        var response = ProdutoResponse.fromDomain(produtoBuscado);
-        return ResponseEntity.ok(response);
+    public List<Produto> buscarPorCategoria(@PathVariable String categoria) {
+        return produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
     }
 
     @GetMapping("/{id}")

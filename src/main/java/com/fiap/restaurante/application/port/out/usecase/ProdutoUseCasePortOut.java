@@ -8,7 +8,7 @@ import com.fiap.restaurante.core.domain.Produto;
 public interface ProdutoUseCasePortOut {
     List<Produto> listarProdutos();
 
-    Produto listarProdutoPorCategoria(String categoria);
+    List<Produto> listarProdutoPorCategoria(String categoria);
 
     Produto listarProdutoPorId(Long id);
 
