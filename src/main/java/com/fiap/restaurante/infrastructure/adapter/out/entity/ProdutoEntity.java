@@ -24,7 +24,7 @@ public class ProdutoEntity {
     @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = "imagemUrl")
+    @Column(name = "imagem_url")
     private String imagemUrl;
 
     public ProdutoEntity() {
