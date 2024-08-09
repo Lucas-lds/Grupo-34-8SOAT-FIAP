@@ -16,25 +16,9 @@ public class ProdutoUseCase implements ProdutoUseCasePortOut {
         this.produtoService = produtoService;
     }
 
-
     @Override
-    public Produto atualizarProduto(Long id, Produto produto) throws BadRequestException {
-        return produtoService.atualizarProduto(id, produto);
-    }
-
-    @Override
-    public Produto criarProduto(Produto produto) {
-        return produtoService.criarProduto(produto);
-    }
-
-    @Override
-    public void deletarPorId(Long id) {
-        produtoService.deletarPorId(id);
-    }
-
-    @Override
-    public Produto listarProdutoPorId(Long id) {
-        return produtoService.listarProdutoPorId(id);
+    public List<Produto> listarProdutos() {
+        return produtoService.listarProdutos().stream().toList();
     }
 
     @Override
@@ -43,7 +27,17 @@ public class ProdutoUseCase implements ProdutoUseCasePortOut {
     }
 
     @Override
-    public List<Produto> listarProdutos() {
-        return produtoService.listarProdutos().stream().toList();
+    public Produto criarProduto(Produto produto) {
+        return produtoService.criarProduto(produto);
+    }
+
+    @Override
+    public Produto atualizarProduto(Long id, Produto produto) throws BadRequestException {
+        return produtoService.atualizarProduto(id, produto);
+    }
+
+    @Override
+    public void deletarPorId(Long id) {
+        produtoService.deletarPorId(id);
     }
 }

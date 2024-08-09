@@ -10,6 +10,7 @@ import com.fiap.restaurante.core.domain.Produto;
 import com.fiap.restaurante.infrastructure.adapter.in.validation.ProdutoValidation;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.ProdutoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoRepository;
+import com.fiap.restaurante.infrastructure.exception.ProdutoException;
 
 @Component
 public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
@@ -21,14 +22,11 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public Produto criarProduto(Produto produto) {
-        ProdutoValidation.validate(produto.getCategoria());
-        return produtoRepository.save(ProdutoEntity.fromDomain(produto)).toDomain();
-    }
-
-    @Override
-    public Produto listarProdutoPorId(Long id) {
-        return produtoRepository.findById(id).orElseThrow().toDomain();
+    public List<Produto> listarProdutos() {
+        List<ProdutoEntity> produtoEntities = produtoRepository.findAll();
+        return produtoEntities.stream()
+                .map(ProdutoEntity::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -41,53 +39,42 @@ public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
     }
 
     @Override
-    public List<Produto> listarProdutos() {
-        List<ProdutoEntity> produtoEntities = produtoRepository.findAll();
-        return produtoEntities.stream()
-                .map(ProdutoEntity::toDomain)
-                .collect(Collectors.toList());
+    public Produto criarProduto(Produto produto) {
+        ProdutoValidation.validateFields(produto);
+        return produtoRepository.save(ProdutoEntity.fromDomain(produto)).toDomain();
     }
 
     @Override
     public Produto atualizarProduto(Long id, Produto produto) {
-        Optional<ProdutoEntity> produtoEntityOptional = produtoRepository.findById(id);
-        if (produtoEntityOptional.isPresent()) {
-            ProdutoEntity produtoEntityExistente = ProdutoEntity.fromDomain(produto);
-            boolean isUpdated = false;
+        try {
+            Optional<ProdutoEntity> produtoEntityOptional = produtoRepository.findById(id);
+            if (produtoEntityOptional.isPresent()) {
+                ProdutoEntity produtoEntityExistente = produtoEntityOptional.get();
+                boolean isUpdated = false;
 
-            // Atualizar somente os campos modificados
-            if (produto.getNome() != null) {
-                produtoEntityExistente.setNome(produto.getNome());
-                isUpdated = true;
-            }
-            if (produto.getCategoria() != null) {
-                ProdutoValidation.validate(produto.getCategoria());
-                produtoEntityExistente.setCategoria(produto.getCategoria());
-                isUpdated = true;
-            }
-            if (produto.getPreco() >= 0) {
-                produtoEntityExistente.setPreco(produto.getPreco());
-                isUpdated = true;
-            }
-            if (produto.getDescricao() != null) {
-                produtoEntityExistente.setDescricao(produto.getDescricao());
-                isUpdated = true;
-            }
-            if (produto.getImagemUrl() != null) {
-                produtoEntityExistente.setImagemUrl(produto.getImagemUrl());
-                isUpdated = true;
-            }
+                // Valida e Atualiza os campos modificados
+                if (ProdutoValidation.validateFields(produto)) {
+                    produtoEntityExistente.setNome(produto.getNome());
+                    produtoEntityExistente.setCategoria(produto.getCategoria());
+                    produtoEntityExistente.setPreco(produto.getPreco());
+                    produtoEntityExistente.setDescricao(produto.getDescricao());
+                    produtoEntityExistente.setImagemUrl(produto.getImagemUrl());
+                    isUpdated = true;
+                }
 
-            if (isUpdated) {
-                // Salvar somente se houver mudanças
-                ProdutoEntity salvo = produtoRepository.save(produtoEntityExistente);
-                return salvo.toDomain();
+                if (isUpdated) {
+                    // Salvar somente se houver mudanças
+                    ProdutoEntity salvo = produtoRepository.save(produtoEntityExistente);
+                    return salvo.toDomain();
+                } else {
+                    // Retornar a entidade existente se nada foi atualizado
+                    return produtoEntityExistente.toDomain();
+                }
             } else {
-                // Retornar a entidade existente se nada foi atualizado
-                return produtoEntityExistente.toDomain();
+                throw new ProdutoException("Produto com ID " + id + " não encontrado");
             }
-        } else {
-            throw new IllegalArgumentException("Produto com ID " + id + " não encontrado");
+        } catch (Exception ex) {
+            throw new ProdutoException(ex.getMessage());
         }
     }
 

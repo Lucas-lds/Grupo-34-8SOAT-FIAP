@@ -1,7 +1,5 @@
 package com.fiap.restaurante.infrastructure.adapter.out.entity;
 
-import java.util.Set;
-
 import com.fiap.restaurante.core.domain.OrderStatus;
 
 import jakarta.persistence.Column;

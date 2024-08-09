@@ -1,6 +1,5 @@
 package com.fiap.restaurante.infrastructure.adapter.out;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -13,21 +12,15 @@ import com.fiap.restaurante.core.domain.Pedido;
 import com.fiap.restaurante.core.domain.PedidoProduto;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoProdutoEntity;
-import com.fiap.restaurante.infrastructure.adapter.out.entity.ProdutoEntity;
-import com.fiap.restaurante.infrastructure.adapter.out.repository.ClienteRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoProdutoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoRepository;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 public class PedidoAdapterOut implements PedidoAdapterPortOut {
 
     @Autowired
     private PedidoRepository pedidoRepository;
-    @Autowired
-    private ClienteRepository clienteRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
     @Autowired

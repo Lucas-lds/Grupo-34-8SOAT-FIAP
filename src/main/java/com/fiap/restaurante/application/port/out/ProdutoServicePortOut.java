@@ -11,8 +11,6 @@ public interface ProdutoServicePortOut {
 
     List<Produto> listarProdutoPorCategoria(String categoria);
 
-    Produto listarProdutoPorId(Long id);
-
     Produto criarProduto(Produto produto);
 
     Produto atualizarProduto(Long id, Produto produto) throws BadRequestException;

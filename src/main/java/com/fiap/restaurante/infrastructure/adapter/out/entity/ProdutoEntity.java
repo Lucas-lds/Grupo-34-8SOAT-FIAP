@@ -30,8 +30,7 @@ public class ProdutoEntity {
     public ProdutoEntity() {
     }
 
-    public ProdutoEntity(Long id, String nome, String categoria, double preco, String descricao, String imagemUrl) {
-        this.id = id;
+    public ProdutoEntity(String nome, String categoria, double preco, String descricao, String imagemUrl) {
         this.nome = nome;
         this.categoria = categoria;
         this.preco = preco;
@@ -44,7 +43,7 @@ public class ProdutoEntity {
     }
 
     public static ProdutoEntity fromDomain(Produto produto) {
-        return new ProdutoEntity(produto.getIdProduto(), produto.getNome(), produto.getCategoria(), produto.getPreco(), produto.getDescricao(), produto.getImagemUrl());
+        return new ProdutoEntity(produto.getNome(), produto.getCategoria(), produto.getPreco(), produto.getDescricao(), produto.getImagemUrl());
     }
 
     public void setId(Long id) {

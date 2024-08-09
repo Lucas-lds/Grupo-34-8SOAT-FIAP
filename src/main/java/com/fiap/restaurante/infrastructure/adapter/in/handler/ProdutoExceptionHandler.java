@@ -5,12 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fiap.restaurante.infrastructure.exception.CategoriaInvalidaException;
+import com.fiap.restaurante.infrastructure.exception.ProdutoException;
 
 @RestControllerAdvice
 public class ProdutoExceptionHandler {
-    @ExceptionHandler(CategoriaInvalidaException.class)
-    public ResponseEntity<String> handleInvalidCategoryException(CategoriaInvalidaException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(ProdutoException.class)
+    public ResponseEntity<ErroRequisicaoResponse> handleInvalidCategoryException(ProdutoException ex) {
+        ErroRequisicaoResponse errorResponse = new ErroRequisicaoResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+
     }
 }

@@ -27,28 +27,9 @@ public class ProdutoController {
         return produtoUseCasePortOut.listarProdutos();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
-        produtoUseCasePortOut.deletarPorId(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("categoria/{categoria}")
     public List<Produto> buscarPorCategoria(@PathVariable String categoria) {
         return produtoUseCasePortOut.listarProdutoPorCategoria(categoria);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Long id) {
-        var produtoBuscado = produtoUseCasePortOut.listarProdutoPorId(id);
-        var response = ProdutoResponse.fromDomain(produtoBuscado);
-        return ResponseEntity.ok(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @RequestBody Produto produtoDetails) throws BadRequestException {
-        Produto updatedProduto = produtoUseCasePortOut.atualizarProduto(id, produtoDetails);
-        return ResponseEntity.ok(updatedProduto);
     }
 
     @PostMapping("/cadastrar")
@@ -56,5 +37,18 @@ public class ProdutoController {
         var produtoCadastrado = produtoUseCasePortOut.criarProduto(produtoRequest.toDomain());
         var response = ProdutoResponse.fromDomain(produtoCadastrado);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequest produtoDetails) throws BadRequestException {
+        var updatedProduto = produtoUseCasePortOut.atualizarProduto(id, produtoDetails.toDomain());
+        var response = ProdutoResponse.fromDomain(updatedProduto);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
+        produtoUseCasePortOut.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }
