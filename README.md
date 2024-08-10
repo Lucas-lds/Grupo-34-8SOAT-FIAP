@@ -53,7 +53,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 ## 💻 Instalação
 
 **Premissas:**
-- Ter o docker instalado na maquina.
+- Ter o docker instalado na máquina.
 
 Para executar a aplicação siga o passo a passo a seguir.
 
