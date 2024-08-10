@@ -43,9 +43,9 @@ A solução adota o Domain Driven Design (DDD) para entender e estruturar o dom�
 Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar a equipe, incluindo:
 - [Glossário da Linguagem Ubíqua](/documents/linguagem-ubiqua/glossario.md)
 - Domain Storytelling
-  - [Fluxo de pedido](/docs/storytelling/01-FastFood-FluxoDePedido.png)
-  - [Fluxo de pedido - Pagamento recusado](/docs/storytelling/02-FastFood-FluxoDePedidoPagamentoRecusado.png)
-  - [Fluxo de preparo](/docs/storytelling/03-FastFood-FluxoDePreparo.png)
+  - [Fluxo de pedido](/documents/storytelling/01-FastFood-FluxoDePedido.png)
+  - [Fluxo de pedido - Pagamento recusado](/documents/storytelling/02-FastFood-FluxoDePedidoPagamentoRecusado.png)
+  - [Fluxo de preparo](/documents/storytelling/03-FastFood-FluxoDePreparo.png)
 - [Event Storming](https://miro.com/app/board/uXjVKFvfVYM=/)  
 - Requests (API)
   - Swagger: http://localhost/swagger
