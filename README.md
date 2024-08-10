@@ -34,21 +34,19 @@ As principais tecnologias e conceitos empregados no projeto incluem:
 - Arquitetura Hexagonal
 - Java
 - MySQL
-- Docke
+- Docker
 
 ## 📖 Documentação
-
-Nessa solução estamos utilizando o Domain Driven Design (DDD) para entender e modelar o domínio do negócio, identificando e categorizando os subdomínios.
-
-Como documentação, foram criados alguns artefatos para facilitar o entendimento da equipe, sendo eles:
-- Domain Storytelling
-- Requests (API)
-  - Swagger: http://localhost/swagger
  
 A solução adota o Domain Driven Design (DDD) para entender e estruturar o domínio do negócio, focando na identificação e categorização dos subdomínios.
 
 Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar a equipe, incluindo:
+- [Glossário da Linguagem Ubíqua](/documents/linguagem-ubiqua/glossario.md)
 - Domain Storytelling
+  - [Fluxo de pedido](/docs/storytelling/01-FastFood-FluxoDePedido.png)
+  - [Fluxo de pedido - Pagamento recusado](/docs/storytelling/02-FastFood-FluxoDePedidoPagamentoRecusado.png)
+  - [Fluxo de preparo](/docs/storytelling/03-FastFood-FluxoDePreparo.png)
+- [Event Storming](https://miro.com/app/board/uXjVKFvfVYM=/)  
 - Requests (API)
   - Swagger: http://localhost/swagger
  
