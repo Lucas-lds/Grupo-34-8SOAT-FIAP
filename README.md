@@ -48,7 +48,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
   - [Fluxo de preparo](/documents/storytelling/03-FastFood-FluxoDePreparo.png)
 - [Event Storming](https://miro.com/app/board/uXjVKFvfVYM=/)  
 - Requests (API)
-  - Swagger: http://localhost/swagger
+  - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html
  
 ## 💻 Instalação
 
