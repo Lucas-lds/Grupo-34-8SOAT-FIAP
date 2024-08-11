@@ -76,4 +76,4 @@ docker compose down
 ```
 
 Acessar no navegador:
-http://localhost/swagger
+http://localhost:8080/api/v1/swagger-ui/index.html
