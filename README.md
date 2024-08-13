@@ -63,7 +63,11 @@ Primeiro, clone o repositório para a sua máquina local:
 git clone git@github.com:Lucas-lds/Grupo-34-8SOAT-FIAP.git
 ```
 
-Navegue até o diretório onde o arquivo docker-compose.yml está localizado.
+Navegue até o diretório onde o arquivo docker-compose.yml está localizado:
+
+```bash
+cd /caminho/para/o/diretorio/correto/docker
+```
 
 Construa as imagens e inicie os serviços com o Docker Compose:
 
