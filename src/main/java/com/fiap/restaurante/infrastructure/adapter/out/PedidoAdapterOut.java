@@ -33,7 +33,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     public Pedido atualizarStatusPedido(OrderStatus status, Long id) {
         var pedido = pedidoRepository.findById(id);
         pedido.ifPresent(t -> {
-            t.setStatus_(status);
+            t.setStatus(status);
             pedidoRepository.save(t);
         });
         return mapper.map(pedido.get(), Pedido.class);
@@ -42,7 +42,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     @Override
     public Pedido criarPedido(Pedido pedido) {
         var pedidoEntity = new PedidoEntity();
-        pedidoEntity.setStatus_(pedido.getStatus());
+        pedidoEntity.setStatus(pedido.getStatus());
         pedidoEntity.setIdCliente(pedido.getIdCliente());
         var pedidoSaved = this.pedidoRepository.save(pedidoEntity);
         pedido.getListaPedidoProdutos().forEach((pedidoProduto) -> {
@@ -68,7 +68,9 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
 
     @Override
     public List<Pedido> listarPedidos() {
-        var listaPedidos = pedidoRepository.findAll();
+        var listaPedidos = pedidoRepository.findAllOrderedByStatus();
+        System.out.println("teste");
+
         return listaPedidos.stream().map(pedido -> preencherPedido(pedido.getId())).toList();
     }
     
@@ -81,7 +83,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
         pedidoResponse.setListaPedidoProdutos(listaProdutos);
         pedidoResponse.setId(listaPedidoProduto.get(0).getPedido().getId());
         pedidoResponse.setIdCliente(listaPedidoProduto.get(0).getPedido().getIdCliente());
-        pedidoResponse.setStatus((listaPedidoProduto.get(0).getPedido().getStatus_()));
+        pedidoResponse.setStatus((listaPedidoProduto.get(0).getPedido().getStatus()));
         return pedidoResponse;
     }
 }

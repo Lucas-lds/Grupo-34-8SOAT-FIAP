@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,8 +31,11 @@ public class PedidoEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status_;
+    private OrderStatus status;
 
     private Long idCliente;
+
+    @Column(name = "data_pedido")
+    private LocalDateTime createdAt;
 
 }
