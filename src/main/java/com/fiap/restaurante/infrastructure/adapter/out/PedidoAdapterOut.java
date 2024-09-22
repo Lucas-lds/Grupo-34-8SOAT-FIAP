@@ -69,8 +69,6 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     @Override
     public List<Pedido> listarPedidos() {
         var listaPedidos = pedidoRepository.findAllOrderedByStatus();
-        System.out.println("teste");
-
         return listaPedidos.stream().map(pedido -> preencherPedido(pedido.getId())).toList();
     }
     
