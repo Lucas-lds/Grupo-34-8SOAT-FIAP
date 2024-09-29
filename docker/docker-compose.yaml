@@ -14,7 +14,6 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql                         # Persistência dos dados do banco de dados
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql   # Mapeia o arquivo init.sql do host para o diretório de inicialização do banco de dados no contêiner
     networks:
       - app-network
     healthcheck:  # O healthcheck verifica se o serviço está funcionando corretamente. Se o healthcheck falhar, o Docker pode reiniciar o contêiner, dependendo da política de reinício configurada.
