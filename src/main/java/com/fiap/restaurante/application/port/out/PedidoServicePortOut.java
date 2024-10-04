@@ -9,7 +9,7 @@ import com.fiap.restaurante.core.domain.Pedido;
 public interface PedidoServicePortOut {
     Pedido atualizarStatusPedido(Integer status, Long id) throws BadRequestException;
 
-    Pedido criarPedido(Pedido pedido);
+    Pedido checkoutPedido(Pedido pedido);
 
     Pedido listarPedidoPorId(Long id);
 

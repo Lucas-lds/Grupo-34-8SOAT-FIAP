@@ -34,9 +34,9 @@ public class PedidoService implements PedidoServicePortOut{
     }
 
     @Override
-    public Pedido criarPedido(Pedido pedido) {
+    public Pedido checkoutPedido(Pedido pedido) {
         pedido.setStatus(OrderStatus.RECEIVED);
-        return pedidoAdapterPortOut.criarPedido(pedido);
+        return pedidoAdapterPortOut.checkoutPedido(pedido);
     }
 
     @Override

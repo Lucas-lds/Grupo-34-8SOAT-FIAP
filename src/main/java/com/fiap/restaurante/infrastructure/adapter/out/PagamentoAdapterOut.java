@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.fiap.restaurante.application.port.out.PagamentoAdapterPortOut;
+import com.fiap.restaurante.infrastructure.adapter.out.repository.PagamentoRepository;
+
 import org.springframework.http.*;
 
 @Component
@@ -17,16 +19,22 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
     private final String accessToken;
     private final String ngrokURL;
     private final String apiQRs;
+    private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoAdapterOut(String accessToken, String ngrokURL, String apiQRs) {
+    public PagamentoAdapterOut(String accessToken, String ngrokURL, String apiQRs, PagamentoRepository pagamentoRepository) {
         this.accessToken = accessToken;
         this.ngrokURL = ngrokURL;
         this.apiQRs = apiQRs;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     @Override
-    public boolean realizarPagamento() {
-        return true;
+    public String consultarStatusPagamento(Long idPedido) {
+        var pagamento = pagamentoRepository.findByIdPedido(idPedido);
+        if(pagamento != null)
+            return pagamento.getStatus().toString();
+        else
+            throw new RuntimeException("Pedido não encontrado!");
     }
 
     @Override

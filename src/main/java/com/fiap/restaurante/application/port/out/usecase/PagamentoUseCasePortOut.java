@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 public interface PagamentoUseCasePortOut {
-    boolean pagar();
+    String consultarStatusPagamento(Long idPedido);
 
     String gerarQRCodePagamento(Double valor, String descricao);
 

@@ -16,8 +16,8 @@ public class PagamentoService implements PagamentoServicePortOut{
     private PagamentoAdapterPortOut pagamentoAdapterPortOut;
 
     @Override
-    public boolean pagar() {
-        return this.pagamentoAdapterPortOut.realizarPagamento();
+    public String consultarStatusPagamento(Long idPedido) {
+        return this.pagamentoAdapterPortOut.consultarStatusPagamento(idPedido);
     }
 
     @Override

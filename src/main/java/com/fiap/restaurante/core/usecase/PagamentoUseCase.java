@@ -13,21 +13,21 @@ import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut
 public class PagamentoUseCase implements PagamentoUseCasePortOut{
 
     @Autowired
-    private PagamentoServicePortOut pagamentoUseCasePortOut;
+    private PagamentoServicePortOut pagamentoServicePortOut;
 
     @Override
-    public boolean pagar() {
-        return this.pagamentoUseCasePortOut.pagar();
+    public String consultarStatusPagamento(Long idPedido) {
+        return this.pagamentoServicePortOut.consultarStatusPagamento(idPedido);
     }
 
     @Override
     public String gerarQRCodePagamento(Double valor, String descricao) {
-        return this.pagamentoUseCasePortOut.gerarQRCodePagamento(valor, descricao);
+        return this.pagamentoServicePortOut.gerarQRCodePagamento(valor, descricao);
     }
 
     @Override
     public ResponseEntity<String> receberNotificacao(Map<String, Object> payload) {
-        return this.pagamentoUseCasePortOut.receberNotificacao(payload);
+        return this.pagamentoServicePortOut.receberNotificacao(payload);
     }
     
 }

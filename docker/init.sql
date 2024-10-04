@@ -29,3 +29,9 @@ CREATE TABLE tb_pedido_produtos (
     FOREIGN KEY (id_pedido) REFERENCES tb_pedidos(id_pedido),  -- Relacionamento com a tabela Pedidos
     FOREIGN KEY (id_produto) REFERENCES tb_produtos(id_produto)  -- Relacionamento com a tabela Produtos
 );
+CREATE TABLE tb_pagamentos (
+    id_pagamento BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_pedido BIGINT NOT NULL,                   -- Identificador do pedido (chave estrangeira)
+    status VARCHAR(50),                            -- Status do pagamento
+    FOREIGN KEY (id_pedido) REFERENCES tb_pedidos(id_pedido),  -- Relacionamento com a tabela Pedidos
+);

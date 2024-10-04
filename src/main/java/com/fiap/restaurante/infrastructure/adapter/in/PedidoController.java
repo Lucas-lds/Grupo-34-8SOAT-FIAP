@@ -34,8 +34,8 @@ public class PedidoController {
     }
 
     @PostMapping
-    public PedidoResponse criarPedido(@RequestBody PedidoRequest pedido) {
-        return pedidoUseCasePortOut.criarPedido(pedido);
+    public PedidoResponse checkoutPedido(@RequestBody PedidoRequest pedido) {
+        return pedidoUseCasePortOut.checkoutPedido(pedido);
     }
     
 

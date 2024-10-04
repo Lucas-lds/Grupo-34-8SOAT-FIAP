@@ -9,7 +9,7 @@ public interface PedidoAdapterPortOut {
 
     Pedido atualizarStatusPedido(OrderStatus status, Long id);
 
-    Pedido criarPedido(Pedido pedido);
+    Pedido checkoutPedido(Pedido pedido);
 
     Pedido listarPedidoPorId(Long id);
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,9 +23,9 @@ public class PagamentoController{
     @Autowired
     private PagamentoUseCasePortOut pagamentoUseCasePortOut;
 
-    @PostMapping
-    public boolean pagar(@RequestBody String entity) {
-        return this.pagamentoUseCasePortOut.pagar();
+    @GetMapping("/status/{idPedido}")
+    public String consultarStatusPagamento(@PathVariable Long idPedido) {
+        return this.pagamentoUseCasePortOut.consultarStatusPagamento(idPedido);
     }
 
     @PostMapping("/gerar-qrcode")

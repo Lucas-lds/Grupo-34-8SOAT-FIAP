@@ -8,10 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.PedidoAdapterPortOut;
 import com.fiap.restaurante.core.domain.OrderStatus;
+import com.fiap.restaurante.core.domain.PaymentStatus;
 import com.fiap.restaurante.core.domain.Pedido;
 import com.fiap.restaurante.core.domain.PedidoProduto;
+import com.fiap.restaurante.infrastructure.adapter.out.entity.PagamentoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.PedidoProdutoEntity;
+import com.fiap.restaurante.infrastructure.adapter.out.repository.PagamentoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoProdutoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PedidoRepository;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoRepository;
@@ -25,6 +28,8 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     private ProdutoRepository produtoRepository;
     @Autowired
     private PedidoProdutoRepository pedidoProdutoRepository;
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -40,7 +45,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     }
 
     @Override
-    public Pedido criarPedido(Pedido pedido) {
+    public Pedido checkoutPedido(Pedido pedido) {
         var pedidoEntity = new PedidoEntity();
         pedidoEntity.setStatus(pedido.getStatus());
         pedidoEntity.setIdCliente(pedido.getIdCliente());
@@ -54,7 +59,14 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
             this.pedidoProdutoRepository.save(entity);
         });
 
-        return mapper.map(pedidoRepository.save(pedidoEntity), Pedido.class);
+        var pedidoRep = mapper.map(pedidoRepository.save(pedidoEntity), Pedido.class);
+
+        var pagamento = new PagamentoEntity();
+        pagamento.setIdPedido(pedidoRep.getId());
+        pagamento.setStatus(PaymentStatus.PENDING);
+        pagamentoRepository.save(pagamento);
+
+        return pedidoRep;
     }
 
     @Override

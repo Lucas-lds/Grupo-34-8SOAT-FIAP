@@ -26,8 +26,8 @@ public class PedidoUseCase implements PedidoUseCasePortOut{
     }
 
     @Override
-    public PedidoResponse criarPedido(PedidoRequest pedido) {
-        return PedidoResponse.fromDomain(pedidoServicePortOut.criarPedido(pedido.toDomain()));
+    public PedidoResponse checkoutPedido(PedidoRequest pedido) {
+        return PedidoResponse.fromDomain(pedidoServicePortOut.checkoutPedido(pedido.toDomain()));
     }
 
     @Override
