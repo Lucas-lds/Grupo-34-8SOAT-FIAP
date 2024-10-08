@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fiap.restaurante.application.port.out.PagamentoServicePortOut;
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
+import com.mercadopago.resources.Payment;
 
 @Component
 public class PagamentoUseCase implements PagamentoUseCasePortOut{
@@ -28,6 +29,11 @@ public class PagamentoUseCase implements PagamentoUseCasePortOut{
     @Override
     public ResponseEntity<String> receberNotificacao(Map<String, Object> payload) {
         return this.pagamentoServicePortOut.receberNotificacao(payload);
+    }
+
+    @Override
+    public Payment consultarPagamentoML(String paymentId) {
+        return this.pagamentoServicePortOut.consultarPagamentoML(paymentId);
     }
     
 }

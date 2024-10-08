@@ -10,6 +10,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fiap.restaurante.application.port.out.PagamentoAdapterPortOut;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.PagamentoRepository;
+import com.mercadopago.MercadoPago;
+import com.mercadopago.exceptions.MPConfException;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Payment;
 
 import org.springframework.http.*;
 
@@ -21,7 +25,9 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
     private final String apiQRs;
     private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoAdapterOut(String accessToken, String ngrokURL, String apiQRs, PagamentoRepository pagamentoRepository) {
+    public PagamentoAdapterOut(String accessToken, String ngrokURL, String apiQRs, PagamentoRepository pagamentoRepository) throws MPConfException {
+        MercadoPago.SDK.setAccessToken(accessToken);
+
         this.accessToken = accessToken;
         this.ngrokURL = ngrokURL;
         this.apiQRs = apiQRs;
@@ -35,6 +41,21 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
             return pagamento.getStatus().toString();
         else
             throw new RuntimeException("Pedido não encontrado!");
+    }
+
+    @Override
+    public Payment consultarPagamentoML(String paymentId) {
+        try {
+            Payment payment = Payment.findById(paymentId);
+            payment.getStatus();
+
+            if (payment != null) {
+                return payment;
+            }
+        } catch (MPException e) {
+            System.err.println("Erro ao consultar o pagamento: " + e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -53,7 +74,7 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
 
         // Configura o corpo da requisição
         JSONObject body = new JSONObject();
-        body.put("external_reference", "123456");
+        body.put("external_reference", "123456"); //inserir o id do pedido
         body.put("notification_url",  ngrokURL + "/api/v1/pagamento/webhook");
         body.put("expiration_date", dataExpiracao);
         body.put("title", descricao);
@@ -94,21 +115,18 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
             return new ResponseEntity<>("Payload vazio", HttpStatus.BAD_REQUEST);
         }
 
-        // Processar o payload
-        Long paymentId = (Long) payload.get("id");
         String action = (String) payload.get("action");
-        String dateCreated = (String) payload.get("date_created");
-        String type = (String) payload.get("type");
-        String userId = (String) payload.get("user_id");
 
         // Exibir o payload recebido
         if (action != null && action.contains("payment.created")) {
-            // Exibir informações para verificação
-            System.out.println("ID do pagamento: " + paymentId);
-            System.out.println("Status do pagamento: " + action);
-            System.out.println("Data de Criação: " + dateCreated);
-            System.out.println("Tipo: " + type);
-            System.out.println("ID do usuario: " + userId);
+            Object dataObj = payload.get("data");
+            Map<String, String> dataMap = (Map<String, String>) dataObj;
+
+            String payId = dataMap.get("id");
+            Payment payment = consultarPagamentoML(payId);
+
+            System.out.println("\nPEDIDO: " + payment.getExternalReference());
+            System.out.println("STATUS_PAGEMENTO: " + payment.getStatus());
         }
 
         return new ResponseEntity<>("Notificação recebida com sucesso", HttpStatus.OK);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
+//import com.mercadopago.resources.Payment;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,5 +39,9 @@ public class PagamentoController{
         return pagamentoUseCasePortOut.receberNotificacao(payload);
     }
     
+    // @GetMapping("/status/{idPagamento}")
+    // public Payment consultarPagamentoML(@PathVariable String idPayment) {
+    //     return this.pagamentoUseCasePortOut.consultarPagamentoML(idPayment);
+    // }
 
 }
