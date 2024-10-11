@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.mercadopago.resources.Payment;
+
 public interface PagamentoAdapterPortOut {
     
     String consultarStatusPagamento(Long idPedido);
@@ -11,5 +13,7 @@ public interface PagamentoAdapterPortOut {
     String gerarQRCodePagamento(Double valor, String descricao);
 
     ResponseEntity<String> receberNotificacao(Map<String, Object> payload);
+
+    Payment consultarPagamentoML(String paymentId);
 
 }

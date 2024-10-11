@@ -5,10 +5,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
+//import com.mercadopago.resources.Payment;
 import com.fiap.restaurante.infrastructure.adapter.in.request.QrCodeRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,5 +39,9 @@ public class PagamentoController{
         return pagamentoUseCasePortOut.receberNotificacao(payload);
     }
     
+    // @GetMapping("/status/{idPagamento}")
+    // public Payment consultarPagamentoML(@PathVariable String idPayment) {
+    //     return this.pagamentoUseCasePortOut.consultarPagamentoML(idPayment);
+    // }
 
 }

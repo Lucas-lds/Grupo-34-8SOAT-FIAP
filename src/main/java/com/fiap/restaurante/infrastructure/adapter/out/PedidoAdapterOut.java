@@ -61,6 +61,7 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
 
         var pedidoRep = mapper.map(pedidoRepository.save(pedidoEntity), Pedido.class);
 
+        //Gerar o QRCode e inserir no registro de pagamento
         var pagamento = new PagamentoEntity();
         pagamento.setIdPedido(pedidoRep.getId());
         pagamento.setStatus(PaymentStatus.PENDING);

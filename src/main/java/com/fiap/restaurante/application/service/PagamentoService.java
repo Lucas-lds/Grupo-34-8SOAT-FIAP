@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fiap.restaurante.application.port.out.PagamentoAdapterPortOut;
 import com.fiap.restaurante.application.port.out.PagamentoServicePortOut;
+import com.mercadopago.resources.Payment;
 
 @Service
 public class PagamentoService implements PagamentoServicePortOut{
@@ -28,6 +29,11 @@ public class PagamentoService implements PagamentoServicePortOut{
     @Override
     public ResponseEntity<String> receberNotificacao(Map<String, Object> payload) {
         return this.pagamentoAdapterPortOut.receberNotificacao(payload);
+    }
+
+    @Override
+    public Payment consultarPagamentoML(String paymentId) {
+        return this.pagamentoAdapterPortOut.consultarPagamentoML(paymentId);
     }
     
 }
