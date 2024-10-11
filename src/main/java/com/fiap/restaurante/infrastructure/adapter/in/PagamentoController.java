@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
+import com.fiap.restaurante.infrastructure.adapter.in.request.QrCodeRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +30,8 @@ public class PagamentoController{
     }
 
     @PostMapping("/gerar-qrcode")
-    public String gerarQrCode(@RequestParam Double valor, @RequestParam String descricao) {
-        return pagamentoUseCasePortOut.gerarQRCodePagamento(valor, descricao);
+    public String gerarQrCode(@RequestBody QrCodeRequest qrCodeRequest) {
+        return pagamentoUseCasePortOut.gerarQRCodePagamento(qrCodeRequest.valor(), qrCodeRequest.descricao());
     }
 
     @PostMapping("/webhook")

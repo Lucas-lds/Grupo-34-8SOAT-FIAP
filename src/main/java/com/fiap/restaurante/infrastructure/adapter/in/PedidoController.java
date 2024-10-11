@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fiap.restaurante.application.port.out.usecase.PedidoUseCasePortOut;
 import com.fiap.restaurante.infrastructure.adapter.in.request.PedidoRequest;
+import com.fiap.restaurante.infrastructure.adapter.in.request.StatusRequest;
 import com.fiap.restaurante.infrastructure.adapter.in.response.PedidoResponse;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +30,8 @@ public class PedidoController {
     }
 
     @PutMapping("/{id}")
-    public PedidoResponse atualizarStatusPedido(@PathVariable Long id, @RequestBody Integer status) throws BadRequestException {
-        return pedidoUseCasePortOut.atualizarStatusPedido(status, id);
+    public PedidoResponse atualizarStatusPedido(@PathVariable Long id, @RequestBody StatusRequest statusRequest) throws BadRequestException {
+        return pedidoUseCasePortOut.atualizarStatusPedido(statusRequest.status(), id);
     }
 
     @PostMapping
