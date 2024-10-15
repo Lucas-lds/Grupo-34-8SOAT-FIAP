@@ -53,7 +53,7 @@ Durante o processo de documentação do DDD, os contextos delimitados foram tran
 - MySQL
 - Docker
 - Kubernetes
-- AWS
+- Desenho Arquitetura - AWS
   - RDS
   - ECR
   - EKS
