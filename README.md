@@ -72,6 +72,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 - Requests (API)
   - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html#/
 - [AWS](/documents/AWS/diagrama-aws.png)
+- [Vídeo](https://youtu.be/JzOYcsCBB5M)
  
 ## 💻 Instalação
 
