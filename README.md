@@ -70,7 +70,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
   - [Fluxo de preparo](/docs/storytelling/03-FastFood-FluxoDePreparo.png)
 - [Event Storming](https://miro.com/app/board/uXjVKFvfVYM=/)  
 - Requests (API)
-  - Swagger: http://localhost/swagger
+  - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html#/
 - [AWS](/documents/AWS/diagrama-aws.png)
  
 ## 💻 Instalação
@@ -99,7 +99,7 @@ docker compose down
 ```
 
 Acessar no navegador:
-http://localhost/swagger
+http://localhost:8080/api/v1/swagger-ui/index.html#/
 
 ## Changelog da Instalação Fase II:
 
