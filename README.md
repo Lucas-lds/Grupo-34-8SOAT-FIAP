@@ -73,6 +73,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
   - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html#/
 - [AWS](/documents/AWS/diagrama-aws.png)
 - [Vídeo](https://youtu.be/JzOYcsCBB5M)
+- [Collection](https://api.postman.com/collections/9276431-267e5c70-e0e6-455d-8de2-472a2862f7b2?access_key=PMAT-01J9YZDJ12YND5V2FCYB0HPG31)
  
 ## 💻 Instalação
 
