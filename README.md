@@ -190,7 +190,7 @@ http://localhost:8080/api/v1/swagger-ui/index.html#/
   - Passo 4: Após a finalização do provisionamento de toda a infraestrutura na AWS, o terminal exibirá a URL da aplicação.
     - Para acessar a interface da aplicação, adicione o endpoint **/api/v1/swagger-ui/** à URL e cole no navegador. 
     -**Exemplo:** a8ee83e4bc22a4019af48ebfa6656574-1293916010.us-east-1.elb.amazonaws.com/api/v1/swagger-ui/index.html   
-  - Passo 5: Para excluir toda a infraestrutura na AWS, execute:
+  - Passo 5: Para excluir toda a infraestrutura na AWS, execute: 
     ```bash
     terraform destroy --auto-approve
     ```   
