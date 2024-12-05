@@ -1,4 +1,4 @@
-name: Full Cloud Deploy
+name: Full Cloud Deploy 
 
 on:
   push:
