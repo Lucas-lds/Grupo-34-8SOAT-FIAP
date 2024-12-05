@@ -20,7 +20,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Build application
-        run: ./mvnw clean package -DskipTests=true
+        run: |
+          chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
+          ./mvnw clean package -DskipTests=true
 
       - name: Upload application artifact
         uses: actions/upload-artifact@v3
