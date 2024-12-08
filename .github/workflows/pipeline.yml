@@ -36,6 +36,8 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
           ./mvnw sonar:sonar \
+          -Dsonar.projectKey=Lucas-lds_Grupo-34-8SOAT-FIAP \
+          -Dsonar.organization=lucas-lds \
           -Dsonar.host.url=$SONAR_HOST_URL \
           -Dsonar.login=$SONAR_TOKEN
 
