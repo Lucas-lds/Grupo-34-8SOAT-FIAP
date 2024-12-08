@@ -24,18 +24,20 @@ jobs:
           chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
           ./mvnw clean package -DskipTests=true
 
-      - name: SonarQube Scan
-        uses: sonarsource/sonarcloud-github-action@v2
-        with:
-          projectKey: my-app-project
-          organization: my-organization
-          token: ${{ secrets.SONAR_TOKEN }}
-
       - name: Upload application artifact
         uses: actions/upload-artifact@v3
         with:
           name: app-jar
           path: target/*.jar
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./mvnw sonar:sonar \
+          -Dsonar.host.url=$SONAR_HOST_URL \
+          -Dsonar.login=$SONAR_TOKEN
 
   # 2. Deploy da aplicação no Kubernetes via Terraform
   deploy-kubernetes:
