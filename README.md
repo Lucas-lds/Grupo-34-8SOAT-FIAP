@@ -35,6 +35,22 @@ Este projeto faz parte do tech challenge da pós-graduação em Arquitetura de S
      - **Antiguidade**:  Pedidos mais antigos primeiro.
      - **Exclusão**: Pedidos com status Finalizado não aparecem.
 
+## Changelog - Fase III
+### 1. Implementação do API Gateway, Lambda e Cognito para Autenticação de Cliente
+- **API Gateway**: Configurado o **API Gateway** para gerenciar as requisições HTTP e direcioná-las para funções específicas.
+- **Autenticação com CPF**: Implementada uma função serverless utilizando **AWS Lambda** que valida o **CPF** do cliente.
+- **Amazon Cognito**: A função **Lambda** agora verifica se o **CPF** fornecido está registrado no **User Pool** do **Amazon Cognito**, realizando a autenticação do cliente.
+
+### 2. Integração com GitHub Actions (CI/CD)
+- **Pipeline GitHub Actions**: Adicionada uma **pipeline de CI/CD** utilizando o **GitHub Actions** para automatizar o processo de build, testes e deploy do projeto.
+
+### 3. Segregação de Recursos Terraform (IaC)
+- **Segregação de Recursos Terraform**: Segregados os arquivos de configuração, como **eks.tf**, **rds.tf**, entre outros, em um único repositório chamado **terraform**, seguindo as melhores práticas de **CI/CD** para manter a infraestrutura como código organizada, modular e reutilizável.
+
+### 4. Melhoria na Estrutura do Banco de Dados com Amazon RDS
+- **Amazon RDS (MySQL)**: Melhorada a estrutura do banco de dados ao migrar para **Amazon RDS** com a engine **MySQL**, garantindo maior escalabilidade, segurança e facilidade no gerenciamento do banco de dados.
+
+
 
 ## 🚀 Tecnologias
 
@@ -57,6 +73,9 @@ Durante o processo de documentação do DDD, os contextos delimitados foram tran
   - RDS
   - ECR
   - EKS
+  - COGNITO
+  - API-GATEWAY
+  - LAMBDA
 
 ## 📖 Documentação
  
@@ -72,6 +91,8 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 - Requests (API)
   - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html#/
 - [AWS](/documents/AWS/diagrama-aws.png)
+- [AWS](/documents/AWS/stack-utilizada.png)
+- [justificativa-mysql] (/documents/justificativa-mysql/justificativa-mysql.png)
 - [Vídeo](https://youtu.be/JzOYcsCBB5M)
 - [Collection](https://api.postman.com/collections/9276431-267e5c70-e0e6-455d-8de2-472a2862f7b2?access_key=PMAT-01J9YZDJ12YND5V2FCYB0HPG31)
  
