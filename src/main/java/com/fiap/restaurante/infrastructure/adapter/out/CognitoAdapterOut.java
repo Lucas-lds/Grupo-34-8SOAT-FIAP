@@ -2,6 +2,7 @@ package com.fiap.restaurante.infrastructure.adapter.out;
 
 import com.fiap.restaurante.application.port.out.CognitoAdapterPortOut;
 import com.fiap.restaurante.core.dto.ClienteCognitoRequestDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
@@ -12,7 +13,9 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeTy
 @Component
 public class CognitoAdapterOut implements CognitoAdapterPortOut {
 
-    private final String userPoolId = "sa-east-1_m3na6PIro";
+    @Value("${USER_POOL_ID}")
+    private String userPoolId;
+
     private final CognitoIdentityProviderClient cognitoClient;
 
     public CognitoAdapterOut() {
