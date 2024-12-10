@@ -4,7 +4,8 @@ import com.fiap.restaurante.application.port.out.ClienteAdapterPortOut;
 import com.fiap.restaurante.core.domain.Cliente;
 import com.fiap.restaurante.infrastructure.adapter.out.entity.ClienteEntity;
 import com.fiap.restaurante.infrastructure.adapter.out.repository.ClienteRepository;
-import com.fiap.restaurante.infrastructure.exception.EmailDuplicadoException;
+import com.fiap.restaurante.infrastructure.exception.EmailDuplicadoException; // Adicionando a importação da exceção
+import com.fiap.restaurante.infrastructure.exception.ClienteNaoEncontradoException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,9 @@ public class ClienteAdapterOut implements ClienteAdapterPortOut {
 
     @Override
     public Cliente buscar(String cpf) {
-        return repository.findFirstByCpf(cpf).orElseThrow().toDomain();
+        return repository.findFirstByCpf(cpf)
+            .map(clienteEntity -> clienteEntity.toDomain()) // Converte a entidade para o domínio
+            .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente com CPF " + cpf + " não encontrado")); // Lança exceção com uma mensagem mais clara
     }
 
     @Override
@@ -27,7 +30,7 @@ public class ClienteAdapterOut implements ClienteAdapterPortOut {
         try {
             return repository.save(ClienteEntity.fromDomain(cliente)).toDomain();
         } catch (DataIntegrityViolationException e) {
-            throw new EmailDuplicadoException("O e-mail fornecido já está cadastrado.");
+            throw new EmailDuplicadoException("O e-mail fornecido já está cadastrado."); // Aqui você usa a exceção importada corretamente
         }
     }
 }

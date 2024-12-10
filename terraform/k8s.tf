@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "restaurante-api" {
 
         container {
           name  = "restaurante"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v4"
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v5"
 
           env {
             name  = "RDS_ENDPOINT"
@@ -40,12 +40,12 @@ resource "kubernetes_deployment" "restaurante-api" {
 
           resources {
             limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
+              cpu    = "1"
+              memory = "1G1"
             }
             requests = {
-              cpu    = "250m"
-              memory = "50Mi"
+              cpu    = "500m"
+              memory = "250Mi"
             }
           }
 
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "restaurante-api" {
               port = 8080
             }
 
-            initial_delay_seconds = 60
+            initial_delay_seconds = 120
             period_seconds        = 10
             timeout_seconds       = 5
             failure_threshold     = 3 

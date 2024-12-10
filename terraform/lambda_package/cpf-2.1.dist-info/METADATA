@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: cpf
+Version: 2.1
+Summary: Gera e checa CPFs de acordo com o padrão brasileiro.
+Home-page: 
+Author: pedrokp
+Author-email: pedrokp@protonmail.com
+License: MIT
+Keywords: cpf
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Education
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+License-File: LICENSE.txt
+
+Checa e gera CPFs de acordo com o padrão brasileiro. Disponivel tambem funcoes como a de checar a regiao do CPF e tambem gerar com regioes especificas. Acesse https://github.com/pedrokpp/gerador-e-checker-de-cpf para mais informacoes.
+
+ChangeLogs
+============
+
+2.0 (20/01/2021)
+------------------
+> Released as a package 
