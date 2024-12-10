@@ -4,19 +4,19 @@ resource "aws_cognito_user_pool" "restaurante_user_pool" {
 
   lifecycle {
     ignore_changes = [
-      schema,  # Ignora mudanças nos atributos do schema
+      schema, # Ignora mudanças nos atributos do schema
     ]
   }
 
   schema {
-    name                 = "custom:cpf"
-    attribute_data_type  = "String"
-    mutable              = true
-    required             = false
+    name                = "custom:cpf"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
   }
 
   # Se quiser validar automaticamente o e-mail, adicione "email" aqui
-  auto_verified_attributes = []  # Estamos apenas verificando o CPF
+  auto_verified_attributes = [] # Estamos apenas verificando o CPF
 }
 
 # Cognito User Pool Client
@@ -29,7 +29,7 @@ resource "aws_cognito_user_pool_client" "restaurante_app_client" {
   # Definindo um fluxo de autenticação personalizado
   explicit_auth_flows = [
     "ALLOW_CUSTOM_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH"  # Adicionando o fluxo de refresh token
+    "ALLOW_REFRESH_TOKEN_AUTH" # Adicionando o fluxo de refresh token
   ]
 }
 

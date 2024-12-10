@@ -68,7 +68,7 @@ resource "kubernetes_deployment" "restaurante-api" {
             initial_delay_seconds = 120
             period_seconds        = 10
             timeout_seconds       = 5
-            failure_threshold     = 3 
+            failure_threshold     = 3
           }
 
         }

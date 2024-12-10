@@ -45,7 +45,7 @@ resource "aws_iam_role_policy_attachment" "rds_access_policy_attachment" {
 resource "kubernetes_service_account" "rds_service_account" {
   metadata {
     name      = "rds-service-account"
-    namespace = "default"  
+    namespace = "default"
     annotations = {
       "eks.amazonaws.com/role-arn" = aws_iam_role.rds_access_role.arn
     }

@@ -34,12 +34,12 @@ resource "null_resource" "prepare_lambda_code" {
 }
 
 resource "aws_lambda_function" "auth_function" {
-  function_name = "authFunction"
-  role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.8"
-  filename      = "/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip"  # Caminho absoluto do arquivo ZIP
-  source_code_hash = filebase64sha256("/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip")  # Calcula o hash do código
+  function_name    = "authFunction"
+  role             = aws_iam_role.lambda_exec_role.arn
+  handler          = "lambda_function.lambda_handler"
+  runtime          = "python3.8"
+  filename         = "/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip"                   # Caminho absoluto do arquivo ZIP
+  source_code_hash = filebase64sha256("/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip") # Calcula o hash do código
 
   environment {
     variables = {
@@ -47,15 +47,15 @@ resource "aws_lambda_function" "auth_function" {
     }
   }
 
-  timeout = 10  # Aumenta o timeout para 10 segundos
+  timeout = 10 # Aumenta o timeout para 10 segundos
 
-    # Garante que o código seja preparado antes de criar a Lambda
+  # Garante que o código seja preparado antes de criar a Lambda
   depends_on = [null_resource.prepare_lambda_code]
 
 
   lifecycle {
-      create_before_destroy = true
-  }  
+    create_before_destroy = true
+  }
 
-  
+
 }

@@ -29,5 +29,5 @@ variable "mysql_database" {
 variable "region" {
   description = "A região para o provisionamento dos recursos"
   type        = string
-  default     = "us-east-1"  # Valor padrão para a região
+  default     = "us-east-1" # Valor padrão para a região
 }

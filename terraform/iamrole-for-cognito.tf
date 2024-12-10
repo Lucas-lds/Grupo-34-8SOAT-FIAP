@@ -6,8 +6,8 @@ resource "aws_iam_role" "lambda_exec_role" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action    = "sts:AssumeRole",
-        Effect    = "Allow",
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
         Principal = {
           Service = "lambda.amazonaws.com"
         }
@@ -25,9 +25,9 @@ resource "aws_iam_role_policy" "lambda_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action   = ["cognito-idp:ListUsers"],  # Permite a ação ListUsers no Cognito
+        Action   = ["cognito-idp:ListUsers"], # Permite a ação ListUsers no Cognito
         Effect   = "Allow",
-        Resource = aws_cognito_user_pool.restaurante_user_pool.arn  # Restrição para o User Pool específico
+        Resource = aws_cognito_user_pool.restaurante_user_pool.arn # Restrição para o User Pool específico
       }
     ]
   })
