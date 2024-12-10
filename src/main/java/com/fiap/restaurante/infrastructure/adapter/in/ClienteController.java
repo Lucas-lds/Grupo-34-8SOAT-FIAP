@@ -17,7 +17,6 @@ public class ClienteController {
         this.clienteUseCasePortOut = clienteUseCasePortOut;
     }
 
-
     @PostMapping("/cadastrar")
     public ResponseEntity<ClienteResponse> cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
         var clienteCadastrado = clienteUseCasePortOut.cadastrarCliente(clienteRequest.toDomain());
