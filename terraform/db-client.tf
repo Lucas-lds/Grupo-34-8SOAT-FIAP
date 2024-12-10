@@ -15,8 +15,8 @@ resource "aws_instance" "db_client" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = tls_private_key.tls_private.private_key_pem 
-      host        = self.public_ip                              
+      private_key = tls_private_key.tls_private.private_key_pem
+      host        = self.public_ip
     }
   }
 

@@ -31,7 +31,7 @@ resource "aws_iam_policy" "eks_node_ecr_policy" {
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchCheckLayerAvailability",
         ],
-        Resource = "*",  # Pode ser restrito a um repositório específico
+        Resource = "*", # Pode ser restrito a um repositório específico
       },
     ],
   })
