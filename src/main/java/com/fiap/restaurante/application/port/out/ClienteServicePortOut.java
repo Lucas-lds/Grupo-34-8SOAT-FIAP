@@ -6,4 +6,6 @@ public interface ClienteServicePortOut {
     Cliente cadastrar(Cliente cliente);
 
     Cliente buscar(String cpf);
+
+    void autenticarCliente(String cpf);
 }
