@@ -30,4 +30,11 @@ public class ClienteController {
         var response = ClienteResponse.fromDomain(clienteBuscado);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/auth/{cpf}")
+    public ResponseEntity<String> validarUsuario(@PathVariable String cpf) {
+        clienteUseCasePortOut.validarAutenticacaoCliente(cpf);
+        return ResponseEntity.ok("Usuario autenticado com sucesso!");
+    }
 }
+

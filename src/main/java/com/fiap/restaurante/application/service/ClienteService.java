@@ -3,6 +3,7 @@ package com.fiap.restaurante.application.service;
 import com.fiap.restaurante.application.port.out.ClienteAdapterPortOut;
 import com.fiap.restaurante.application.port.out.ClienteServicePortOut;
 import com.fiap.restaurante.application.port.out.CognitoAdapterPortOut;
+import com.fiap.restaurante.application.port.out.ValidarCpfLambdaPortOut;
 import com.fiap.restaurante.core.domain.Cliente;
 import com.fiap.restaurante.core.dto.ClienteCognitoRequestDTO;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ public class ClienteService implements ClienteServicePortOut {
 
     private final ClienteAdapterPortOut clienteAdapterPortOut;
     private final CognitoAdapterPortOut cognitoAdapterPortOut;
+    private final ValidarCpfLambdaPortOut validarCpfLambdaPortOut;
 
-    public ClienteService(ClienteAdapterPortOut clienteAdapterPortOut, CognitoAdapterPortOut cognitoAdapterPortOut) {
+    public ClienteService(ClienteAdapterPortOut clienteAdapterPortOut, CognitoAdapterPortOut cognitoAdapterPortOut,
+                          ValidarCpfLambdaPortOut validarCpfLambdaPortOut) {
         this.clienteAdapterPortOut = clienteAdapterPortOut;
         this.cognitoAdapterPortOut = cognitoAdapterPortOut;
+        this.validarCpfLambdaPortOut = validarCpfLambdaPortOut;
     }
 
     @Override
@@ -28,7 +32,13 @@ public class ClienteService implements ClienteServicePortOut {
 
     @Override
     public Cliente buscar(String cpf) {
+
         return clienteAdapterPortOut.buscar(cpf);
+    }
+
+    @Override
+    public void autenticarCliente(String cpf) {
+        validarCpfLambdaPortOut.validarCpf(cpf);
     }
 
 }

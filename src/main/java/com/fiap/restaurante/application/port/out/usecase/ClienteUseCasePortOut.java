@@ -7,4 +7,6 @@ public interface ClienteUseCasePortOut {
     Cliente buscarCliente(String cpf);
 
     Cliente cadastrarCliente(Cliente cliente);
+
+    void validarAutenticacaoCliente(String cpf);
 }
