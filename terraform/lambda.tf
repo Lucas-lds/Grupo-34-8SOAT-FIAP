@@ -23,7 +23,7 @@ resource "null_resource" "prepare_lambda_code" {
       ls -l /home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda
 
       # Cria o arquivo ZIP com o código e as dependências
-      cd ./lambda_package && zip -r /home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip .
+      cd ./lambda_package && zip -r ../lambda/lambda_function.zip .
     EOT
   }
 
