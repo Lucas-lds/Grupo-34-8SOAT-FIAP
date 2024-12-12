@@ -83,7 +83,7 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          echo "LAMBDA_ARN=$(terraform output -raw lambda_function_arn)" >> $GITHUB_ENV
+          echo "GATEWAY_URL=$(terraform output -raw gateway_url)" >> $GITHUB_ENV
           echo "COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_ENV
         working-directory: terraform/
 
@@ -102,7 +102,7 @@ jobs:
 
       - name: Inject Configurations into Deployment
         run: |
-          sed -i "s/{LAMBDA_ARN}/$LAMBDA_ARN/g" kubernetes/deployment.yaml
+          sed -i "s|{GATEWAY_URL}|$GATEWAY_URL|g" kubernetes/deployment.yaml
           sed -i "s/{COGNITO_USER_POOL_ID}/$COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
 
       - name: Deploy application to Kubernetes
