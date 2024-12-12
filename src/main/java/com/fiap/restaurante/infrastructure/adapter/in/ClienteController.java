@@ -17,7 +17,6 @@ public class ClienteController {
         this.clienteUseCasePortOut = clienteUseCasePortOut;
     }
 
-
     @PostMapping("/cadastrar")
     public ResponseEntity<ClienteResponse> cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
         var clienteCadastrado = clienteUseCasePortOut.cadastrarCliente(clienteRequest.toDomain());
@@ -31,4 +30,11 @@ public class ClienteController {
         var response = ClienteResponse.fromDomain(clienteBuscado);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/auth/{cpf}")
+    public ResponseEntity<String> validarUsuario(@PathVariable String cpf) {
+        clienteUseCasePortOut.validarAutenticacaoCliente(cpf);
+        return ResponseEntity.ok("Usuario autenticado com sucesso!");
+    }
 }
+

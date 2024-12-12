@@ -21,4 +21,11 @@ public class ClienteUseCase implements ClienteUseCasePortOut {
     public Cliente cadastrarCliente(Cliente cliente) {
         return clienteService.cadastrar(cliente);
     }
+
+    @Override
+    public void validarAutenticacaoCliente(String cpf) {
+        clienteService.autenticarCliente(cpf);
+    }
+
+
 }
