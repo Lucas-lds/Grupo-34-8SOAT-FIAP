@@ -16,7 +16,7 @@ public class ValidarCpfLambdaAdapterOut implements ValidarCpfLambdaPortOut {
     private final RestTemplate restTemplate;
     private final RetryTemplate retryTemplate;
 
-    @Value("${api.gateway.url:}")
+    @Value("${aws.gateway.url:}")
     private String apiGatewayUrl;
 
     public ValidarCpfLambdaAdapterOut(RetryTemplate retryTemplate) {
