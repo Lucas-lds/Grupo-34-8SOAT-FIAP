@@ -38,8 +38,8 @@ resource "aws_lambda_function" "auth_function" {
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
-  filename         = "/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip"                   # Caminho absoluto do arquivo ZIP
-  source_code_hash = filebase64sha256("/home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda/lambda_function.zip") # Calcula o hash do código
+  filename         = "../lambda/lambda_function.zip"                   # Caminho absoluto do arquivo ZIP
+  source_code_hash = filebase64sha256("../lambda/lambda_function.zip") # Calcula o hash do código
 
   environment {
     variables = {
