@@ -93,14 +93,14 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          # Captura os valores do Terraform Output
-          GATEWAY_URL=$(terraform output -raw gateway_url | tr -d '"')
-          COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id | tr -d '"')
-          
+          # Captura os valores do Terraform Output usando formato JSON e jq
+          GATEWAY_URL=$(terraform output -json gateway_url | jq -r '.')
+          COGNITO_USER_POOL_ID=$(terraform output -json cognito_user_pool_id | jq -r '.')
+      
           # Exibe os valores capturados para depuração
           echo "GATEWAY_URL=$GATEWAY_URL"
           echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID"
-          
+      
           # Exporta as variáveis para o ambiente do GitHub
           echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
           echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
@@ -109,6 +109,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+
 
 
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
