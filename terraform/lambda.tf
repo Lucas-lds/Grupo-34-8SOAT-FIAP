@@ -15,14 +15,14 @@ resource "null_resource" "prepare_lambda_code" {
       # Instala a dependência cpf dentro do diretório lambda_package
       pip install cpf -t ./lambda_package
 
-      # Garante que o diretório lambda exista, usando caminho absoluto
-      mkdir -p /home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda
+      # Garante que o diretório lambda exista, usando caminho relativo
+      mkdir -p ../lambda
 
       # Exibe o conteúdo do diretório lambda para garantir que exista
       echo "Listing contents of lambda directory:"
-      ls -l /home/raf/Desktop/pos-fiap/fase2/Grupo-34-8SOAT-FIAP/lambda
+      ls -l ../lambda
 
-      # Cria o arquivo ZIP com o código e as dependências
+      # Cria o arquivo ZIP com o código e as dependências, usando caminho relativo
       cd ./lambda_package && zip -r ../lambda/lambda_function.zip .
     EOT
   }
