@@ -71,9 +71,9 @@ jobs:
 
       - name: Check Outputs in Terraform
         run: |
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}"
           terraform output gateway_url
           terraform output cognito_user_pool_id
-          terraform output region
         working-directory: terraform/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
