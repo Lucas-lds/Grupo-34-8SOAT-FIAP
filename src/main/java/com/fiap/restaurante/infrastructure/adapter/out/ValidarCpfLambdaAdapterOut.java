@@ -1,12 +1,11 @@
 package com.fiap.restaurante.infrastructure.adapter.out;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap.restaurante.application.port.out.ValidarCpfLambdaPortOut;
-import jakarta.annotation.PostConstruct;
+import com.fiap.restaurante.infrastructure.exception.ClienteSemPermissaoCognitoException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,28 +13,17 @@ import org.springframework.web.client.RestTemplate;
 public class ValidarCpfLambdaAdapterOut implements ValidarCpfLambdaPortOut {
 
     private final RestTemplate restTemplate;
-    private final RetryTemplate retryTemplate;
+    private final ObjectMapper objectMapper;
 
     @Value("${aws.gateway.url:}")
     private String apiGatewayUrl;
 
-    public ValidarCpfLambdaAdapterOut(RetryTemplate retryTemplate) {
+    public ValidarCpfLambdaAdapterOut(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate();
-        this.retryTemplate = retryTemplate;
-    }
-
-    @PostConstruct
-    public void init() {
-        retryTemplate.execute(context -> {
-            if (apiGatewayUrl == null || apiGatewayUrl.isEmpty()) {
-                throw new RuntimeException("A URL do API Gateway não está configurada.");
-            }
-            return null;
-        });
     }
 
     @Override
-    @Retryable(value = RuntimeException.class, maxAttempts = 5, backoff = @Backoff(delay = 2000))
     public void validarCpf(String cpf) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -47,10 +35,14 @@ public class ValidarCpfLambdaAdapterOut implements ValidarCpfLambdaPortOut {
             ResponseEntity<String> response = restTemplate.exchange(apiGatewayUrl, HttpMethod.POST, entity,
                     String.class);
 
-            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new RuntimeException("Cliente não tem permissão no cognito");
+            JsonNode jsonResponse = objectMapper.readTree(response.getBody());
+
+            if (jsonResponse.get("statusCode").asInt() == HttpStatus.NOT_FOUND.value()) {
+                throw new ClienteSemPermissaoCognitoException("Cliente não tem permissão no cognito");
             }
 
+        } catch (ClienteSemPermissaoCognitoException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Falha ao conectar ao cognito: " + e);
         }
