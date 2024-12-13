@@ -18,9 +18,12 @@ resource "null_resource" "prepare_lambda_code" {
       # Garante que o diretório lambda exista, usando caminho relativo
       mkdir -p ../lambda
 
-      # Exibe o conteúdo do diretório lambda para garantir que exista
-      echo "Listing contents of lambda directory:"
+      # Verifica e exibe o conteúdo do diretório lambda para garantir que exista
+      echo "Listing contents of lambda directory before zipping:"
       ls -l ../lambda
+
+      # Garante permissões adequadas no diretório lambda
+      chmod -R 755 ../lambda
 
       # Cria o arquivo ZIP com o código e as dependências, usando caminho relativo
       cd ./lambda_package && zip -r ../lambda/lambda_function.zip .
