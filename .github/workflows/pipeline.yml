@@ -125,8 +125,8 @@ jobs:
 
       - name: Inject Configurations into Deployment
         run: |
-          sed -i "s|{GATEWAY_URL}|$GATEWAY_URL|g" kubernetes/deployment.yaml
-          sed -i "s/{COGNITO_USER_POOL_ID}/$COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
+          sed -i "s|{GATEWAY_URL}|$FORMATTED_GATEWAY_URL|g" kubernetes/deployment.yaml
+          sed -i "s/{COGNITO_USER_POOL_ID}/$FORMATTED_COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
 
       - name: Deploy application to Kubernetes
         run: |
