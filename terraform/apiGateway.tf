@@ -36,3 +36,17 @@ resource "aws_lambda_permission" "allow_api_gateway" {
   principal     = "apigateway.amazonaws.com"
   function_name = aws_lambda_function.auth_function.function_name
 }
+
+# Deployment da API
+resource "aws_api_gateway_deployment" "auth_api_deployment" {
+  rest_api_id = aws_api_gateway_rest_api.auth_api.id
+  depends_on  = [aws_api_gateway_method.auth_method]  # Certifique-se de que os métodos estão criados antes
+  
+}
+
+# Criação do estágio da API
+resource "aws_api_gateway_stage" "api_stage" {
+  stage_name    = "prod"  
+  rest_api_id   = aws_api_gateway_rest_api.auth_api.id
+  deployment_id = aws_api_gateway_deployment.auth_api_deployment.id
+}

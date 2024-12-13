@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "restaurante-api" {
 
         container {
           name  = "restaurante"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v6"
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v8"
 
           env {
             name  = "RDS_ENDPOINT"

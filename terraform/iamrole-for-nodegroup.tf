@@ -81,3 +81,27 @@ resource "aws_iam_role_policy_attachment" "eks_node_policy_attachment" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = aws_iam_policy.eks_node_policy.arn
 }
+
+resource "aws_iam_policy" "eks_node_secrets_manager_policy" {
+  name        = "EKSNodeSecretsManagerPolicy"
+  description = "Policy for accessing AWS Secrets Manager for EKS nodes"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = "*",  # Ou especifique os ARNs dos segredos que os nós precisam acessar
+      },
+    ],
+  })
+}
+
+# Anexa a política ao role dos nós do EKS
+resource "aws_iam_role_policy_attachment" "eks_node_secrets_manager_attachment" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = aws_iam_policy.eks_node_secrets_manager_policy.arn
+}

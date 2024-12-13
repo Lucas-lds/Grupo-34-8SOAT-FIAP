@@ -73,3 +73,26 @@ resource "aws_iam_role_policy_attachment" "attach_custom_policy" {
 
 
 
+resource "aws_iam_policy" "eks_secrets_manager_policy" {
+  name        = "EKSSecretsManagerPolicy"
+  description = "Policy for accessing AWS Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = "*",  
+      },
+    ],
+  })
+}
+
+# Anexa a política ao role do EKS
+resource "aws_iam_role_policy_attachment" "eks_secrets_manager_attachment" {
+  role       = aws_iam_role.eks_role.name
+  policy_arn = aws_iam_policy.eks_secrets_manager_policy.arn
+}
