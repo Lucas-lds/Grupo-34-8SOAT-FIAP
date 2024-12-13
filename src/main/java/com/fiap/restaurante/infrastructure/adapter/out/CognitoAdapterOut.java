@@ -3,7 +3,6 @@ package com.fiap.restaurante.infrastructure.adapter.out;
 import com.fiap.restaurante.application.port.out.CognitoAdapterPortOut;
 import com.fiap.restaurante.core.dto.ClienteCognitoRequestDTO;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -19,7 +18,7 @@ public class CognitoAdapterOut implements CognitoAdapterPortOut {
 
     private final CognitoIdentityProviderClient cognitoClient;
 
-    public CognitoAdapterOut(RetryTemplate retryTemplate) {
+    public CognitoAdapterOut() {
         this.cognitoClient = CognitoIdentityProviderClient.builder()
                 .region(Region.SA_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())
