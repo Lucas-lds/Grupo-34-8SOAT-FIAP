@@ -80,12 +80,21 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      - name: Check Outputs in Terraform
+        run: |
+          terraform output gateway_url
+          terraform output cognito_user_pool_id
+        working-directory: terraform/
+      
       - name: Export Infra Variables
         id: export-vars
         run: |
           GATEWAY_URL=$(terraform output -raw gateway_url)
-          echo "Gateway URL: $GATEWAY_URL"
+          COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)
+          echo "GATEWAY_URL=$GATEWAY_URL"
+          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID"
           echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
         working-directory: terraform/
 
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
