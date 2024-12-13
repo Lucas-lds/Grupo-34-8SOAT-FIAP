@@ -71,7 +71,7 @@ jobs:
 
       - name: Check Outputs in Terraform
         run: |
-          terraform output gateway_url
+          terraform output -json gateway_url
           terraform output cognito_user_pool_id
         working-directory: terraform/
         env:
@@ -82,7 +82,7 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          GATEWAY_URL=$(terraform output -json gateway_url | jq -r .value)  # Captura do output JSON com jq
+          GATEWAY_URL=$(terraform output -raw gateway_url 2>/dev/null | tr -d '"')
           echo "Gateway URL: $GATEWAY_URL"
           echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV  # Save as environment variable
         working-directory: terraform/
