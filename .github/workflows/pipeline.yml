@@ -93,17 +93,10 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          # Captura os valores do Terraform Output usando formato JSON e jq
-          GATEWAY_URL=$(terraform output -json gateway_url | jq -r '.')
-          COGNITO_USER_POOL_ID=$(terraform output -json cognito_user_pool_id | jq -r '.')
-      
-          # Exibe os valores capturados para depuração
-          echo "GATEWAY_URL=$GATEWAY_URL"
-          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID"
-      
-          # Exporta as variáveis para o ambiente do GitHub
-          echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+          GATEWAY_URL=$(terraform output -raw gateway_url)  # Captura sem as aspas
+          GATEWAY_URL=$(echo $GATEWAY_URL | sed 's/^"(.*)"$/\1/')  # Remove aspas se necessário
+          echo "Gateway URL: $GATEWAY_URL"
+          echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV  # Save as environment variable
         working-directory: terraform/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
