@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "restaurante-api" {
 
         container {
           name  = "restaurante"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v5"
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v6"
 
           env {
             name  = "RDS_ENDPOINT"
@@ -41,7 +41,7 @@ resource "kubernetes_deployment" "restaurante-api" {
           resources {
             limits = {
               cpu    = "1"
-              memory = "1G1"
+              memory = "1Gi"
             }
             requests = {
               cpu    = "500m"
