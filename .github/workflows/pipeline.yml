@@ -83,9 +83,29 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          echo "GATEWAY_URL=$(terraform output -raw gateway_url)" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_ENV
+          echo "Retrieving GATEWAY_URL from Terraform..."
+          GATEWAY_URL=$(terraform output -raw gateway_url)
+          echo "GATEWAY_URL=$GATEWAY_URL"
+          
+          echo "Retrieving COGNITO_USER_POOL_ID from Terraform..."
+          COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)
+          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID"
+          
+          if [ -z "$GATEWAY_URL" ]; then
+            echo "Error: GATEWAY_URL is empty"
+            exit 1
+          fi
+      
+          if [ -z "$COGNITO_USER_POOL_ID" ]; then
+            echo "Error: COGNITO_USER_POOL_ID is empty"
+            exit 1
+          fi
+      
+          echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
         working-directory: terraform/
+
+
 
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
   configure-backend:
