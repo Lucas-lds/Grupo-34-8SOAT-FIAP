@@ -83,8 +83,9 @@ jobs:
       - name: Export Infra Variables
         id: export-vars
         run: |
-          echo "LAMBDA_ARN=$(terraform output -raw lambda_function_arn)" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_ENV
+          GATEWAY_URL=$(terraform output -raw gateway_url)
+          echo "Gateway URL: $GATEWAY_URL"
+          echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
         working-directory: terraform/
 
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
