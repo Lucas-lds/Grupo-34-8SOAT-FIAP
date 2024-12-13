@@ -26,7 +26,7 @@ resource "null_resource" "prepare_lambda_code" {
       chmod -R 755 ../lambda
 
       # Cria o arquivo ZIP com o código e as dependências, usando caminho relativo
-      cd ./lambda_package && zip -r /lambda/lambda_function.zip .
+      cd ./lambda_package && zip -r ../lambda/lambda_function.zip .
     EOT
   }
 
@@ -41,8 +41,8 @@ resource "aws_lambda_function" "auth_function" {
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
-  filename         = "/lambda/lambda_function.zip"                   # Caminho absoluto do arquivo ZIP
-  source_code_hash = filebase64sha256("/lambda/lambda_function.zip") # Calcula o hash do código
+  filename         = "../lambda/lambda_function.zip"                   # Caminho absoluto do arquivo ZIP
+  source_code_hash = filebase64sha256("../lambda/lambda_function.zip") # Calcula o hash do código
 
   environment {
     variables = {
