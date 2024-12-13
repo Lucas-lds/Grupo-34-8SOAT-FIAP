@@ -1,5 +1,5 @@
 output "gateway_url" {
-  value = aws_api_gateway_rest_api.auth_api.invoke_url  # Exemplo de URL do Gateway API
+  value = aws_api_gateway_rest_api.auth_api.execution_arn  # Exemplo de URL do Gateway API
   description = "URL do API Gateway"
 }
 
