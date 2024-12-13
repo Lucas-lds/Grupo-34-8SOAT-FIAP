@@ -123,10 +123,18 @@ jobs:
         with:
           name: app-jar
 
+      - name: Generate deployment.yaml
+        run: |
+          # Gerar o deployment.yaml a partir do Kubernetes
+          kubectl get deployment restaurante-api -o yaml > kubernetes/deployment.yaml
+        working-directory: terraform/
+
       - name: Inject Configurations into Deployment
         run: |
+          echo "Injetando configurações..."
           sed -i "s|{GATEWAY_URL}|$FORMATTED_GATEWAY_URL|g" kubernetes/deployment.yaml
           sed -i "s/{COGNITO_USER_POOL_ID}/$FORMATTED_COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
+        working-directory: terraform/
 
       - name: Deploy application to Kubernetes
         run: |
