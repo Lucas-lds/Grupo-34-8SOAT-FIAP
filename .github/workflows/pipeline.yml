@@ -100,10 +100,6 @@ jobs:
           echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
           echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
         working-directory: terraform/
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
 
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
   configure-backend:
