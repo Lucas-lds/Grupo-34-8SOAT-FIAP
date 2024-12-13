@@ -85,19 +85,22 @@ jobs:
         run: |
           # Obtemos a URL do API Gateway do Terraform Output
           GATEWAY_URL=$(terraform output -raw gateway_url)
+          COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)
           
           # Defina manualmente a região ou utilize um secret/variável
           REGION="us-east-1"  # Exemplo de região manualmente atribuída
       
           # Substitua o * na URL do API Gateway pela região
           FORMATTED_GATEWAY_URL=$(echo $GATEWAY_URL | sed "s/\*\*\*/$REGION/")
+          FORMATTED_COGNITO_USER_POOL_ID=$(echo $COGNITO_USER_POOL_ID | sed "s/\*\*\*/$REGION/")
       
           # Exibe a URL formatada para depuração
           echo "Formatted Gateway URL: $FORMATTED_GATEWAY_URL"
+          echo "Formatted COGNITO USER POOL ID: $FORMATTED_COGNITO_USER_POOL_ID"
 
           # Exporta as variáveis para o GitHub Environment
           echo "GATEWAY_URL=$FORMATTED_GATEWAY_URL" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV
 
         working-directory: terraform/
         env:
