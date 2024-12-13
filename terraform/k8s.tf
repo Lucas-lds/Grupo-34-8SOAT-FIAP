@@ -41,7 +41,7 @@ resource "kubernetes_deployment" "restaurante-api" {
           resources {
             limits = {
               cpu    = "1"
-              memory = "1G1"
+              memory = "1Gi"
             }
             requests = {
               cpu    = "500m"
