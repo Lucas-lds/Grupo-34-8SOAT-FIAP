@@ -109,7 +109,6 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
 
-
   # 3. Configuração dinâmica do backend e deploy no Kubernetes
   configure-backend:
     runs-on: ubuntu-latest
@@ -123,23 +122,15 @@ jobs:
         with:
           name: app-jar
 
-      - name: Generate deployment.yaml
-        run: |
-          # Gerar o deployment.yaml a partir do Kubernetes
-          kubectl get deployment restaurante-api -o yaml > kubernetes/deployment.yaml
+      - name: Apply Terraform configurations
+        run: | # Passa as variáveis do GATEWAY_URL e COGNITO_USER_POOL_ID para o Terraform
+          terraform apply -var "gateway_url=$GATEWAY_URL" -var "cognito_user_pool_id=$COGNITO_USER_POOL_ID" -auto-approve
         working-directory: terraform/
-
-      - name: Inject Configurations into Deployment
-        run: |
-          echo "Injetando configurações..."
-          sed -i "s|{GATEWAY_URL}|$FORMATTED_GATEWAY_URL|g" kubernetes/deployment.yaml
-          sed -i "s/{COGNITO_USER_POOL_ID}/$FORMATTED_COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
-        working-directory: terraform/
-
+    
       - name: Deploy application to Kubernetes
-        run: |
-          kubectl apply -f kubernetes/
-          kubectl rollout status deployment my-app
+        run: | # Em vez de usar kubectl get, já aplicamos a configuração diretamente com Terraform
+          kubectl rollout status deployment restaurante-api
+        working-directory: terraform/
 
   # 4. Deploy da função Lambda
   deploy-lambda:
