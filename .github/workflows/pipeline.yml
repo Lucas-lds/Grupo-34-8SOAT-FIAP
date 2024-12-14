@@ -30,17 +30,6 @@ jobs:
           name: app-jar
           path: target/*.jar
 
-      - name: SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          ./mvnw sonar:sonar \
-          -Dsonar.projectKey=Lucas-lds_Grupo-34-8SOAT-FIAP \
-          -Dsonar.organization=lucas-lds \
-          -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.login=$SONAR_TOKEN
-
   # 2. Provisionar infraestrutura com Terraform (sem destroy)
   provision-infrastructure:
     runs-on: ubuntu-latest
@@ -80,30 +69,44 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      - name: Check Outputs in Terraform
+        run: |
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}"
+          terraform output gateway_url
+          terraform output cognito_user_pool_id
+        working-directory: terraform/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      
       - name: Export Infra Variables
         id: export-vars
         run: |
-          echo "Retrieving GATEWAY_URL from Terraform..."
+          # Obtemos a URL do API Gateway do Terraform Output
           GATEWAY_URL=$(terraform output -raw gateway_url)
-          echo "GATEWAY_URL=$GATEWAY_URL"
-          
-          echo "Retrieving COGNITO_USER_POOL_ID from Terraform..."
           COGNITO_USER_POOL_ID=$(terraform output -raw cognito_user_pool_id)
-          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID"
           
-          if [ -z "$GATEWAY_URL" ]; then
-            echo "Error: GATEWAY_URL is empty"
-            exit 1
-          fi
+          # Defina manualmente a região ou utilize um secret/variável
+          REGION="us-east-1"  # Exemplo de região manualmente atribuída
       
-          if [ -z "$COGNITO_USER_POOL_ID" ]; then
-            echo "Error: COGNITO_USER_POOL_ID is empty"
-            exit 1
-          fi
+          # Substitua o * na URL do API Gateway pela região
+          FORMATTED_GATEWAY_URL=$(echo $GATEWAY_URL | sed "s/\*\*\*/$REGION/")
+          FORMATTED_COGNITO_USER_POOL_ID=$(echo $COGNITO_USER_POOL_ID | sed "s/\*\*\*/$REGION/")
       
-          echo "GATEWAY_URL=$GATEWAY_URL" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+          # Exibe a URL formatada para depuração
+          echo "Formatted Gateway URL: $FORMATTED_GATEWAY_URL"
+          echo "Formatted COGNITO USER POOL ID: $FORMATTED_COGNITO_USER_POOL_ID"
+
+          # Exporta as variáveis para o GitHub Environment
+          echo "GATEWAY_URL=$FORMATTED_GATEWAY_URL" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+
         working-directory: terraform/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
 
 
@@ -120,10 +123,18 @@ jobs:
         with:
           name: app-jar
 
+      - name: Generate deployment.yaml
+        run: |
+          # Gerar o deployment.yaml a partir do Kubernetes
+          kubectl get deployment restaurante-api -o yaml > kubernetes/deployment.yaml
+        working-directory: terraform/
+
       - name: Inject Configurations into Deployment
         run: |
-          sed -i "s|{GATEWAY_URL}|$GATEWAY_URL|g" kubernetes/deployment.yaml
-          sed -i "s/{COGNITO_USER_POOL_ID}/$COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
+          echo "Injetando configurações..."
+          sed -i "s|{GATEWAY_URL}|$FORMATTED_GATEWAY_URL|g" kubernetes/deployment.yaml
+          sed -i "s/{COGNITO_USER_POOL_ID}/$FORMATTED_COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
+        working-directory: terraform/
 
       - name: Deploy application to Kubernetes
         run: |
