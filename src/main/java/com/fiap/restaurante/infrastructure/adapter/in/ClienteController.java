@@ -37,4 +37,3 @@ public class ClienteController {
         return ResponseEntity.ok("Usuario autenticado com sucesso!");
     }
 }
-

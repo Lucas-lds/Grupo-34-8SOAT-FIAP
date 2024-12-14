@@ -7,7 +7,7 @@ set -e
 AWS_REGION="us-east-1"
 ACCOUNT_ID="717279688908"
 REPO_NAME="repositorio"
-IMAGE_TAG="v6"  # Defina a tag da imagem aqui
+IMAGE_TAG="v8"  # Defina a tag da imagem aqui
 
 # Diretório de contexto é o diretório pai onde o código fonte está localizado
 CONTEXT_DIR=".."  # Um nível acima, onde está o código fonte e outros arquivos
