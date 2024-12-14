@@ -100,7 +100,7 @@ jobs:
 
           # Exporta as variáveis para o GitHub Environment
           echo "GATEWAY_URL=$FORMATTED_GATEWAY_URL" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV 
 
         working-directory: terraform/
         env:
