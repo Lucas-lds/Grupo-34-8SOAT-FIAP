@@ -36,8 +36,3 @@ variable "gateway_url" {
   description = "The URL of the API Gateway."
   type        = string
 }
-
-variable "cognito_user_pool_id" {
-  description = "The ID of the Cognito User Pool."
-  type        = string
-}
