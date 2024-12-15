@@ -18,7 +18,7 @@ output "pem" {
 
 # Recurso para criar um segredo no AWS Secrets Manager
 resource "aws_secretsmanager_secret" "example" {
-  name = "keypair-4" # Nome do segredo que será armazenado
+  name = "keypair-5-new" # Nome do segredo que será armazenado
 }
 
 # Recurso para armazenar a versão do segredo no AWS Secrets Manager

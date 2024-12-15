@@ -71,7 +71,6 @@ jobs:
 
       - name: Check Outputs in Terraform
         run: |
-          echo "AWS_REGION=${{ secrets.AWS_REGION }}"
           terraform output gateway_url
           terraform output cognito_user_pool_id
         working-directory: terraform/
@@ -100,63 +99,70 @@ jobs:
 
           # Exporta as variáveis para o GitHub Environment
           echo "GATEWAY_URL=$FORMATTED_GATEWAY_URL" >> $GITHUB_ENV
-          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV
-
+          echo "COGNITO_USER_POOL_ID=$FORMATTED_COGNITO_USER_POOL_ID" >> $GITHUB_ENV 
         working-directory: terraform/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-
-
-  # 3. Configuração dinâmica do backend e deploy no Kubernetes
-  configure-backend:
-    runs-on: ubuntu-latest
-    needs: provision-infrastructure
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Download application artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: app-jar
-
-      - name: Generate deployment.yaml
+      - name: Apply Terraform Configurations
         run: |
-          # Gerar o deployment.yaml a partir do Kubernetes
-          kubectl get deployment restaurante-api -o yaml > kubernetes/deployment.yaml
+          terraform apply -var "gateway_url=${{ env.GATEWAY_URL }}" -var "cognito_user_pool_id=${{ env.COGNITO_USER_POOL_ID }}" -auto-approve
         working-directory: terraform/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Inject Configurations into Deployment
-        run: |
-          echo "Injetando configurações..."
-          sed -i "s|{GATEWAY_URL}|$FORMATTED_GATEWAY_URL|g" kubernetes/deployment.yaml
-          sed -i "s/{COGNITO_USER_POOL_ID}/$FORMATTED_COGNITO_USER_POOL_ID/g" kubernetes/deployment.yaml
-        working-directory: terraform/
+  # # 3. Configuração dinâmica do backend e deploy no Kubernetes
+  # configure-backend:
+  #   runs-on: ubuntu-latest
+  #   needs: provision-infrastructure
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v3
+  
+  #     - name: Download application artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: app-jar
+  
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: 1.5.0
+  
+  #     - name: Apply Terraform Configurations
+  #       run: |
+  #         terraform apply -var "gateway_url=${{ env.GATEWAY_URL }}" -var "cognito_user_pool_id=${{ env.COGNITO_USER_POOL_ID }}" -auto-approve
+  #       working-directory: terraform/
+  #       env:
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         AWS_REGION: ${{ secrets.AWS_REGION }}
+  
+  #     - name: Rollout Kubernetes Deployment
+  #       run: kubectl rollout status deployment restaurante-api
+  #       working-directory: terraform/
 
-      - name: Deploy application to Kubernetes
-        run: |
-          kubectl apply -f kubernetes/
-          kubectl rollout status deployment my-app
 
-  # 4. Deploy da função Lambda
-  deploy-lambda:
-    runs-on: ubuntu-latest
-    needs: provision-infrastructure
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+  # # 4. Deploy da função Lambda
+  # deploy-lambda:
+  #   runs-on: ubuntu-latest
+  #   needs: provision-infrastructure
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v3
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+  #     - name: Set up AWS CLI
+  #       uses: aws-actions/configure-aws-credentials@v3
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy Lambda
-        run: |
-          zip function.zip lambda/lambda_function.py
-          aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_NAME }} --zip-file fileb://function.zip
+  #     - name: Deploy Lambda
+  #       run: |
+  #         zip lambda_function.zip lambda/lambda_function.py
+  #         aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_NAME }} --zip-file fileb://lambda_function.zip
