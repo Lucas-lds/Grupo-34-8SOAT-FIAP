@@ -32,13 +32,13 @@ variable "region" {
   default     = "us-east-1" # Valor padrão para a região
 }
 
-variable "gateway_url" {
+variable "GATEWAY_URL" {
   description = "The URL of the API Gateway."
   type        = string
   default = "https://example.execute-api.us-east-1.amazonaws.com"
 }
 
-variable "cognito_user_pool_id" {
+variable "COGNITO_USER_POOL_ID" {
   description = "The ID of the Cognito User Pool."
   type        = string
   default = "us-east-1_ABC123456"
