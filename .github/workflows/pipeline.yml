@@ -30,6 +30,17 @@ jobs:
           name: app-jar
           path: target/*.jar
 
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./mvnw sonar:sonar \
+          -Dsonar.projectKey=Lucas-lds_Grupo-34-8SOAT-FIAP \
+          -Dsonar.organization=lucas-lds \
+          -Dsonar.host.url=$SONAR_HOST_URL \
+          -Dsonar.login=$SONAR_TOKEN
+
   # 2. Provisionar infraestrutura com Terraform
   provision-infrastructure:
     runs-on: ubuntu-latest
@@ -97,7 +108,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-      - name: Inject Environment Variables into application.properties
+      - name: Inject Environment Variables into application
         if: steps.terraform-plan.outcome == 'successs'
         run: |
           sed -i "s|gateway_url=.*|gateway_url=${{ env.GATEWAY_URL }}|" src/main/resources/application.properties
