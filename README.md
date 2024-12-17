@@ -1,6 +1,6 @@
 # Grupo-34-8SOAT-FIAP
 
-<h1 align="center">FastFood API: Solução Completa de Auto-Atendimento para Restaurantes</h1>
+<h1 align="center">FastFood API: Solução Completa de Auto-Atendimento para Restaurantes</h1> 
 
 <p align="center">
   <a href="#Sobre">Sobre</a>&nbsp;&nbsp;|&nbsp;&nbsp;
