@@ -72,7 +72,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Terraform Apply (Conditional)
-        if: steps.terraform-plan.outcome == 'success'
+        if: steps.terraform-plan.outcome == 'successs'
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/
         env:
@@ -81,7 +81,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
       
       - name: Export Infra Variables
-        if: steps.terraform-plan.outcome == 'success'
+        if: steps.terraform-plan.outcome == 'successs'
         id: export-vars
         run: |
           # Obtemos a URL do API Gateway do Terraform Output
@@ -109,7 +109,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Inject Environment Variables into application
-        if: steps.terraform-plan.outcome == 'success'
+        if: steps.terraform-plan.outcome == 'successs'
         run: |
           sed -i "s|gateway_url=.*|gateway_url=${{ env.GATEWAY_URL }}|" src/main/resources/application.properties
           sed -i "s|cognito_user_pool_id=.*|cognito_user_pool_id=${{ env.COGNITO_USER_POOL_ID }}|" src/main/resources/application.properties
