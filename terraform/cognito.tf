@@ -24,7 +24,7 @@ resource "aws_cognito_user_pool_client" "restaurante_app_client" {
   name         = "restaurante-app-client"
   user_pool_id = aws_cognito_user_pool.restaurante_user_pool.id
 
-  generate_secret = true
+  generate_secret = false
 
   # Definindo um fluxo de autenticação personalizado
   explicit_auth_flows = [

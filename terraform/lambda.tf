@@ -44,6 +44,7 @@ resource "aws_lambda_function" "auth_function" {
   environment {
     variables = {
       COGNITO_USER_POOL_ID = aws_cognito_user_pool.restaurante_user_pool.id # Referência ao Cognito User Pool ID
+      COGNITO_CLIENT_ID    = aws_cognito_user_pool_client.restaurante_app_client.id # Referência ao Cognito Client ID
     }
   }
 

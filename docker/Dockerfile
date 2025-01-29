@@ -45,7 +45,7 @@ COPY docker/init.sh /app/init.sh
 # Garantir que o script tenha permissão de execução
 RUN chmod +x /app/init.sh
 
-# Exemplo com credenciais (não recomendado para produção)
+# Exemplo com credenciais (não recomendado para produto)
 ENV AWS_ACCESS_KEY_ID=AKIA2OAJTPDGMI4FOJVI
 ENV AWS_SECRET_ACCESS_KEY=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
 ENV AWS_DEFAULT_REGION=us-east-1
