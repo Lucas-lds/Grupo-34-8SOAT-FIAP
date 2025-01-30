@@ -45,9 +45,13 @@ COPY docker/init.sh /app/init.sh
 # Garantir que o script tenha permissão de execução
 RUN chmod +x /app/init.sh
 
+# Definir argumentos de build para as chaves de acesso AWS
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
 # Exemplo com credenciais (não recomendado para produto)
-ENV AWS_ACCESS_KEY_ID=AKIA2OAJTPDGMI4FOJVI
-ENV AWS_SECRET_ACCESS_KEY=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
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 ENV AWS_DEFAULT_REGION=us-east-1
 
 # Definir o ponto de entrada para o contêiner: executar o script init.sh

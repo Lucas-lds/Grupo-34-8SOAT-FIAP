@@ -34,3 +34,6 @@ build/
 
 ### Terraform ###
 .terraform/
+
+# Ignore o arquivo .env
+docker/.env
