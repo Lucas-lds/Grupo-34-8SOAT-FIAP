@@ -1,86 +1,52 @@
 package com.fiap.restaurante.infrastructure.adapter.out;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import java.util.Optional;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import com.fiap.restaurante.application.port.out.ProdutoAdapterPortOut;
 import com.fiap.restaurante.core.domain.Produto;
-import com.fiap.restaurante.infrastructure.adapter.in.validation.ProdutoValidation;
-import com.fiap.restaurante.infrastructure.adapter.out.entity.ProdutoEntity;
-import com.fiap.restaurante.infrastructure.adapter.out.repository.ProdutoRepository;
-import com.fiap.restaurante.infrastructure.exception.ProdutoException;
 
 @Component
 public class ProdutoAdapterOut implements ProdutoAdapterPortOut {
 
-    private final ProdutoRepository produtoRepository;
+    private final RestTemplate restTemplate;
 
-    public ProdutoAdapterOut( ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
+    @Value("${produto.microservice.url}")
+    private String microserviceUrl;
+
+    public ProdutoAdapterOut(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     @Override
     public List<Produto> listarProdutos() {
-        List<ProdutoEntity> produtoEntities = produtoRepository.findAll();
-        return produtoEntities.stream()
-                .map(ProdutoEntity::toDomain)
-                .collect(Collectors.toList());
+        Produto[] produtos = restTemplate.getForObject(microserviceUrl + "/produtos", Produto[].class);
+        return List.of(produtos);
     }
 
     @Override
     public List<Produto> listarProdutoPorCategoria(String categoria) {
-        ProdutoValidation.validate(categoria);
-        List<ProdutoEntity> produtoEntities = produtoRepository.findProductByCategoria(categoria);
-        return produtoEntities.stream()
-                .map(ProdutoEntity::toDomain)
-                .collect(Collectors.toList());
+        //ProdutoValidation.validate(categoria);
+        Produto[] produtos = restTemplate.getForObject(microserviceUrl + "/produtos/categoria/" + categoria, Produto[].class);
+        return List.of(produtos);
     }
 
     @Override
     public Produto criarProduto(Produto produto) {
-        ProdutoValidation.validateFields(produto);
-        return produtoRepository.save(ProdutoEntity.fromDomain(produto)).toDomain();
+        //ProdutoValidation.validateFields(produto);
+        return restTemplate.postForObject(microserviceUrl + "/produtos/cadastrar", produto, Produto.class);
     }
 
     @Override
     public Produto atualizarProduto(Long id, Produto produto) {
-        try {
-            Optional<ProdutoEntity> produtoEntityOptional = produtoRepository.findById(id);
-            if (produtoEntityOptional.isPresent()) {
-                ProdutoEntity produtoEntityExistente = produtoEntityOptional.get();
-                boolean isUpdated = false;
-
-                // Valida e Atualiza os campos modificados
-                if (ProdutoValidation.validateFields(produto)) {
-                    produtoEntityExistente.setNome(produto.getNome());
-                    produtoEntityExistente.setCategoria(produto.getCategoria());
-                    produtoEntityExistente.setPreco(produto.getPreco());
-                    produtoEntityExistente.setDescricao(produto.getDescricao());
-                    produtoEntityExistente.setImagemUrl(produto.getImagemUrl());
-                    isUpdated = true;
-                }
-
-                if (isUpdated) {
-                    // Salvar somente se houver mudanças
-                    ProdutoEntity salvo = produtoRepository.save(produtoEntityExistente);
-                    return salvo.toDomain();
-                } else {
-                    // Retornar a entidade existente se nada foi atualizado
-                    return produtoEntityExistente.toDomain();
-                }
-            } else {
-                throw new ProdutoException("Produto com ID " + id + " não encontrado");
-            }
-        } catch (Exception ex) {
-            throw new ProdutoException(ex.getMessage());
-        }
+        //ProdutoValidation.validateFields(produto);
+        restTemplate.put(microserviceUrl + "/produtos/" + id, produto);
+        return produto; // Assuming the product is returned after update
     }
 
     @Override
     public void deletarPorId(Long id) {
-        produtoRepository.deleteById(id);
+        restTemplate.delete(microserviceUrl + "/produtos/" + id);
     }
-    
 }
