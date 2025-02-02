@@ -75,7 +75,6 @@ public class PedidoAdapterOut implements PedidoAdapterPortOut {
     @Override
     public Pedido checkoutPedido(Pedido pedido) {
 
-        //TODO arrumar aqui
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
