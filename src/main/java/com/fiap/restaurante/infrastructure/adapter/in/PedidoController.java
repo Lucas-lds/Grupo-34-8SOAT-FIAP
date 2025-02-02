@@ -1,6 +1,7 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +27,7 @@ public class PedidoController {
 
     @Operation(summary = "Atualizar status do pedido", description = "Atualiza o status de um pedido.")
     @PutMapping("/{id}")
-    public PedidoResponse atualizarStatusPedido(@PathVariable Long id, @RequestBody StatusRequest statusRequest) throws BadRequestException {
+    public PedidoResponse atualizarStatusPedido(@PathVariable UUID id, @RequestBody StatusRequest statusRequest) throws BadRequestException {
         return pedidoUseCasePortOut.atualizarStatusPedido(statusRequest.status(), id);
     }
 
@@ -38,7 +39,7 @@ public class PedidoController {
 
     @Operation(summary = "Buscar pedido por ID", description = "Busca um pedido específico pelo seu ID.")
     @GetMapping("/{id}")
-    public PedidoResponse getPedidoById(@PathVariable Long id) {
+    public PedidoResponse getPedidoById(@PathVariable UUID id) {
         return pedidoUseCasePortOut.listarPedidoPorId(id);
     }
 

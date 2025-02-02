@@ -3,7 +3,6 @@ package com.fiap.restaurante.infrastructure.adapter.in;
 import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,4 +36,5 @@ public class PagamentoController {
     public ResponseEntity<String> receberNotificacao(@RequestBody Map<String, Object> payload) {
         return pagamentoUseCasePortOut.receberNotificacao(payload);
     }
+
 }

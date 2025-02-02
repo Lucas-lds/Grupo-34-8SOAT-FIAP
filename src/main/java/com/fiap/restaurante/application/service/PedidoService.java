@@ -1,6 +1,7 @@
 package com.fiap.restaurante.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
@@ -11,26 +12,18 @@ import com.fiap.restaurante.core.domain.OrderStatus;
 import com.fiap.restaurante.core.domain.Pedido;
 
 @Service
-public class PedidoService implements PedidoServicePortOut{
+public class PedidoService implements PedidoServicePortOut {
 
     private final PedidoAdapterPortOut pedidoAdapterPortOut;
 
-    public PedidoService( PedidoAdapterPortOut pedidoAdapterPortOut) {
+    public PedidoService(PedidoAdapterPortOut pedidoAdapterPortOut) {
         this.pedidoAdapterPortOut = pedidoAdapterPortOut;
     }
 
     @Override
-    public Pedido atualizarStatusPedido(Integer status, Long id) throws BadRequestException {
-        if( status == 2)
-            return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.PREPARING, id);
-        else if(status == 3)
-            return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.DONE, id);
-        else if(status == 4)
-            return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.FINISHED, id);
-        else if(status == 5)
-            return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.CANCELED, id);
-        else
-            throw new BadRequestException("Status não permitido.");
+    public Pedido atualizarStatusPedido(Integer status, UUID id) throws BadRequestException {
+        return pedidoAdapterPortOut.atualizarStatusPedido(OrderStatus.fromStatusCode(status), id);
+
     }
 
     @Override
@@ -40,7 +33,7 @@ public class PedidoService implements PedidoServicePortOut{
     }
 
     @Override
-    public Pedido listarPedidoPorId(Long id) {
+    public Pedido listarPedidoPorId(UUID id) {
         return pedidoAdapterPortOut.listarPedidoPorId(id);
     }
 
@@ -50,5 +43,4 @@ public class PedidoService implements PedidoServicePortOut{
     }
 
 
-    
 }

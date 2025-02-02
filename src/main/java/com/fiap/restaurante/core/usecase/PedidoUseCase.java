@@ -1,6 +1,7 @@
 package com.fiap.restaurante.core.usecase;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class PedidoUseCase implements PedidoUseCasePortOut{
 
 
     @Override
-    public PedidoResponse atualizarStatusPedido(Integer status, Long id) throws BadRequestException {
+    public PedidoResponse atualizarStatusPedido(Integer status, UUID id) throws BadRequestException {
         return PedidoResponse.fromDomain(pedidoServicePortOut.atualizarStatusPedido(status, id));
     }
 
@@ -31,7 +32,7 @@ public class PedidoUseCase implements PedidoUseCasePortOut{
     }
 
     @Override
-    public PedidoResponse listarPedidoPorId(Long id) {
+    public PedidoResponse listarPedidoPorId(UUID id) {
         return PedidoResponse.fromDomain(pedidoServicePortOut.listarPedidoPorId(id));
     }
 
