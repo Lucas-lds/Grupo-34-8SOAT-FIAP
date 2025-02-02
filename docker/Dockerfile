@@ -45,6 +45,9 @@ COPY docker/init.sh /app/init.sh
 # Garantir que o script tenha permissão de execução
 RUN chmod +x /app/init.sh
 
+# Copiar o arquivo .env para dentro do container (variáveis de ambiente)
+COPY docker/.env /app/.env
+
 # Definir argumentos de build para as chaves de acesso AWS
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
