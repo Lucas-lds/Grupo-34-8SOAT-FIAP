@@ -1,15 +1,13 @@
 package com.fiap.restaurante.infrastructure.adapter.out;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
+
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.fiap.restaurante.application.port.out.PagamentoAdapterPortOut;
-import com.fiap.restaurante.infrastructure.adapter.out.repository.PagamentoRepository;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
@@ -18,29 +16,32 @@ import com.mercadopago.resources.Payment;
 import org.springframework.http.*;
 
 @Component
-public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
+public class PagamentoAdapterOut implements PagamentoAdapterPortOut {
 
-    private final String accessToken;
-    private final String ngrokURL;
-    private final String apiQRs;
-    private final PagamentoRepository pagamentoRepository;
+    private final RestTemplate restTemplate;
 
-    public PagamentoAdapterOut(String accessToken, String ngrokURL, String apiQRs, PagamentoRepository pagamentoRepository) throws MPConfException {
-        MercadoPago.SDK.setAccessToken(accessToken);
+    @Value("${pagamento.service.url}")
+    private String pagamentoServiceUrl;
 
-        this.accessToken = accessToken;
-        this.ngrokURL = ngrokURL;
-        this.apiQRs = apiQRs;
-        this.pagamentoRepository = pagamentoRepository;
+    public PagamentoAdapterOut(RestTemplate restTemplate) throws MPConfException {
+        this.restTemplate = restTemplate;
     }
 
     @Override
     public String consultarStatusPagamento(Long idPedido) {
-        var pagamento = pagamentoRepository.findByIdPedido(idPedido);
-        if(pagamento != null)
-            return pagamento.getStatus().toString();
-        else
-            throw new RuntimeException("Pedido não encontrado!");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(pagamentoServiceUrl + "/status/" + idPedido,
+                HttpMethod.GET, requestEntity, String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        } else {
+            throw new RuntimeException("Erro ao consultar o status do pagamento: " + response.getBody());
+        }
     }
 
     @Override
@@ -60,50 +61,19 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
 
     @Override
     public String gerarQRCodePagamento(Double valor, String descricao) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Configura o cabeçalho da requisição
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(accessToken);
 
-        String dataExpiracao = LocalDateTime.now()
-            .plusMinutes(10)
-            .atOffset(ZoneOffset.of("-03:00"))
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
-
-        // Configura o corpo da requisição
         JSONObject body = new JSONObject();
-        body.put("external_reference", "123456"); //inserir o id do pedido
-        body.put("notification_url",  ngrokURL + "/api/v1/pagamento/webhook");
-        body.put("expiration_date", dataExpiracao);
-        body.put("title", descricao);
-        body.put("description", descricao);
-        body.put("total_amount", valor);
-        body.put("items", new JSONObject[]{
-            new JSONObject()
-                .put("title", descricao)
-                .put("quantity", 1)
-                .put("unit_price", valor)
-                .put("unit_measure", "unit")
-                .put("total_amount", valor)
-        });
+        body.put("valor", valor);
+        body.put("descricao", descricao);
 
         HttpEntity<String> request = new HttpEntity<>(body.toString(), headers);
 
-        // Enviar a requisição POST
-        ResponseEntity<String> response = restTemplate.postForEntity(
-            apiQRs,
-            request,
-            String.class
-        );
+        ResponseEntity<String> response = restTemplate.postForEntity(pagamentoServiceUrl + "/gerar-qrcode", request, String.class);
 
-        System.err.println(response.getStatusCode());
-
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            // Retornar o URL do QR Code
-            JSONObject jsonResponse = new JSONObject(response.getBody());
-            return jsonResponse.getString("qr_data");
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
         } else {
             throw new RuntimeException("Erro ao gerar QR Code: " + response.getBody());
         }
@@ -115,21 +85,16 @@ public class PagamentoAdapterOut implements PagamentoAdapterPortOut{
             return new ResponseEntity<>("Payload vazio", HttpStatus.BAD_REQUEST);
         }
 
-        String action = (String) payload.get("action");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(payload, headers);
 
-        // Exibir o payload recebido
-        if (action != null && action.contains("payment.created")) {
-            Object dataObj = payload.get("data");
-            Map<String, String> dataMap = (Map<String, String>) dataObj;
+        ResponseEntity<String> response = restTemplate.postForEntity(pagamentoServiceUrl + "/webhook", requestEntity, String.class);
 
-            String payId = dataMap.get("id");
-            Payment payment = consultarPagamentoML(payId);
-
-            System.out.println("\nPEDIDO: " + payment.getExternalReference());
-            System.out.println("STATUS_PAGEMENTO: " + payment.getStatus());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Erro ao receber notificação: " + response.getBody(), HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>("Notificação recebida com sucesso", HttpStatus.OK);
     }
-    
 }
