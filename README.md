@@ -51,6 +51,7 @@ Este projeto faz parte do tech challenge da pós-graduação em Arquitetura de S
 - **Amazon RDS (MySQL)**: Melhorada a estrutura do banco de dados ao migrar para **Amazon RDS** com a engine **MySQL**, garantindo maior escalabilidade, segurança e facilidade no gerenciamento do banco de dados.
 
 ## Changelog - Fase IV
+
 ### 1. Refatoração do Projeto para Microsserviços
 - **Microsserviço de Pedido**: Criado o microsserviço **Pedido**, responsável por registrar e listar pedidos, com banco de dados **DynamoDB** (NoSQL).
 - **Microsserviço de Pagamento**: Criado o microsserviço **Pagamento**, responsável por gerenciar a cobrança e atualizar o status do pedido, utilizando **RDS/MySQL** (SQL).
@@ -69,7 +70,12 @@ Este projeto faz parte do tech challenge da pós-graduação em Arquitetura de S
 - **Cobertura de Testes**: A cobertura de testes foi estabelecida em **70%** ou mais em todos os microsserviços.
 
 ### 5. Organização dos Repositórios e CI/CD
-- **Repositórios Separados**: Cada microsserviço agora possui seu próprio repositório, seguindo a abordagem de repositórios separados para cada aplicação.
+- **Repositórios Separados**: Cada microsserviço agora possui seu próprio repositório, seguindo a abordagem de repositórios separados para cada aplicação. Os **links** para os repositórios dos microsserviços e do monolito são:
+  - [Monolito (Grupo-34-8SOAT-FIAP)](https://github.com/Lucas-lds/Grupo-34-8SOAT-FIAP)
+  - [Microsserviço de Pedido](https://github.com/Lucas-lds/grupo-34-restaurante-pedido)
+  - [Microsserviço de Produto](https://github.com/Lucas-lds/grupo-34-restaurante-produto)
+  - [Microsserviço de Pagamento](https://github.com/Lucas-lds/grupo-34-restaurante-pagamento)
+  
 - **Proteção da Branch Main/Master**: As branches **main/master** estão protegidas, impedindo commits diretos.
 - **Pull Requests e Validação de Build**: Pull requests para a branch **main/master** agora validam o build da aplicação, e a qualidade do código é verificada utilizando **SonarQube**, com cobertura de código mínima de **70%**.
 - **CI/CD Integrado**: Todos os microsserviços estão configurados com **CI/CD** e, no merge de pull requests, o deploy de todos os microsserviços é executado corretamente.
