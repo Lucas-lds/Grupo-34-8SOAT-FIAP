@@ -18,9 +18,9 @@ resource "aws_iam_role" "eks_node_role" {
 
 
 # Anexa a política ao role dos nós do EKS
-resource "aws_iam_role_policy_attachment" "eks_node_ecr_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "eks_restaurante_node_ecr_policy_attachment" {
   role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" #aws_iam_policy.eks_node_ecr_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" #aws_iam_policy.eks_restaurante_node_ecr_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cni_policy" {

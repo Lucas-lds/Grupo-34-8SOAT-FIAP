@@ -31,13 +31,3 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
-
-variable "vpc_id" {
-  description = "ID da VPC"
-  type        = string
-}
-
-variable "eks_cluster_cidr" {
-  description = "CIDR do cluster EKS"
-  type        = string
-}

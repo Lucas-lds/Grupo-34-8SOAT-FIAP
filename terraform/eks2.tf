@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "eks-cluster" {
 
 
   vpc_config {
-    security_group_ids      = [aws_security_group.ssh_cluster.id]
+    security_group_ids      = [aws_security_group.ssh_cluster_restaurante.id]
     subnet_ids              = ["subnet-0ba1d16a81898b46b", "subnet-02e5a2960cbaf6259"]
     endpoint_private_access = true
     endpoint_public_access  = true

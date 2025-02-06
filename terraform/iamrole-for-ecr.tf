@@ -17,7 +17,7 @@ resource "aws_iam_role" "ecr_access_role" {
 }
 
 # Define uma política para permitir que os nós acessem o ECR
-resource "aws_iam_policy" "eks_node_ecr_policy" {
+resource "aws_iam_policy" "eks_restaurante_node_ecr_policy" {
   name        = "eks-node-ecr-policy"
   description = "Policy to allow EKS nodes to pull images from ECR"
   policy = jsonencode({
@@ -40,5 +40,5 @@ resource "aws_iam_policy" "eks_node_ecr_policy" {
 # Anexa a política ao Role
 resource "aws_iam_role_policy_attachment" "ecr_access_policy_attachment" {
   role       = aws_iam_role.ecr_access_role.name
-  policy_arn = aws_iam_policy.eks_node_ecr_policy.arn
+  policy_arn = aws_iam_policy.eks_restaurante_node_ecr_policy.arn
 }
