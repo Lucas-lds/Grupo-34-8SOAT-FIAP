@@ -41,35 +41,35 @@ jobs:
           -Dsonar.host.url=$SONAR_HOST_URL \
           -Dsonar.login=$SONAR_TOKEN
 
-  deploy-repo1:
+  deploy-produto:
     runs-on: ubuntu-latest
     steps:
-      - name: Chamar Deploy do Repositório 1
+      - name: Chamar Deploy do Repositório Produto
         run: |
           curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-produto/actions/workflows/pipeline.yml/dispatches \
           -d '{"ref":"main"}'
 
-  # deploy-repo2:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Chamar Deploy do Repositório 2
-  #       run: |
-  #         curl -X POST -H "Authorization: token ${{ secrets.REPO2_DEPLOY_TOKEN }}" \
-  #         -H "Accept: application/vnd.github.v3+json" \
-  #         https://api.github.com/repos/ORG/REPO2/actions/workflows/deploy.yml/dispatches \
-  #         -d '{"ref":"main"}'
+  deploy-pedido:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar Deploy do Repositório Pedido
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pedido/actions/workflows/pipeline.yml/dispatches \
+          -d '{"ref":"main"}'
 
-  # deploy-repo3:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Chamar Deploy do Repositório 3
-  #       run: |
-  #         curl -X POST -H "Authorization: token ${{ secrets.REPO3_DEPLOY_TOKEN }}" \
-  #         -H "Accept: application/vnd.github.v3+json" \
-  #         https://api.github.com/repos/ORG/REPO3/actions/workflows/deploy.yml/dispatches \
-  #         -d '{"ref":"main"}'
+  deploy-pagamento:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar Deploy do Repositório Pagamento
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pagamento/actions/workflows/pipeline.yml/dispatches \
+          -d '{"ref":"main"}'
 
   # 2. Provisionar infraestrutura com Terraform
   # provision-infrastructure:
