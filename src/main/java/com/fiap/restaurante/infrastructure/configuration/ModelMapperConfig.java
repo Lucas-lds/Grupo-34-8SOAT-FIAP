@@ -12,8 +12,4 @@ public class ModelMapperConfig {
     return new ModelMapper();
   }
 
-  @Bean
-  public RestTemplate restTemplate() {
-    return new RestTemplate();
-  }
 }

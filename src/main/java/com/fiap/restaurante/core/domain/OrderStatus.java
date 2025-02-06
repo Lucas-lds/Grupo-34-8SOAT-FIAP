@@ -25,4 +25,13 @@ public enum OrderStatus {
         }
         throw new IllegalArgumentException("Invalid status code: " + statusCode);
     }
+
+    public static OrderStatus fromName(String name) {
+        for (OrderStatus status : OrderStatus.values()) {
+            if (status.name().equalsIgnoreCase(name)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Invalid status name: " + name);
+    }
 }
