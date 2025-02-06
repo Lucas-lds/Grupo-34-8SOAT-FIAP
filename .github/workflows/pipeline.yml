@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: Chamar Deploy do Repositório Pedido
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PEDIDO_DEPLOY_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pedido/actions/workflows/pipeline.yml/dispatches \
           -d '{"ref":"main"}'
@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Chamar Deploy do Repositório Pagamento
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PAGAMENTO_DEPLOY_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pagamento/actions/workflows/pipeline.yml/dispatches \
           -d '{"ref":"main"}'
