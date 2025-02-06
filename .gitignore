@@ -31,9 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-.env/
+docker/.env
 
 ### Terraform ###
 .terraform/
-
-.env/
