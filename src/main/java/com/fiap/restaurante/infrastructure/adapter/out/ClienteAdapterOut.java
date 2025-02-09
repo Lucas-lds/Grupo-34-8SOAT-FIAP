@@ -22,7 +22,7 @@ public class ClienteAdapterOut implements ClienteAdapterPortOut {
     public Cliente buscar(String cpf) {
         return repository.findFirstByCpf(cpf)
             .map(clienteEntity -> clienteEntity.toDomain()) // Converte a entidade para o domínio
-            .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente com CPF " + cpf + " não encontrado")); // Lança exceção com uma mensagem mais clara
+            .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente com CPF " + cpf + " não encontrado"));
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ClienteAdapterOut implements ClienteAdapterPortOut {
         try {
             return repository.save(ClienteEntity.fromDomain(cliente)).toDomain();
         } catch (DataIntegrityViolationException e) {
-            throw new EmailDuplicadoException("O e-mail fornecido já está cadastrado."); // Aqui você usa a exceção importada corretamente
+            throw new EmailDuplicadoException("O e-mail fornecido já está cadastrado.");
         }
     }
 }
