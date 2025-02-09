@@ -41,6 +41,36 @@ jobs:
           -Dsonar.host.url=$SONAR_HOST_URL \
           -Dsonar.login=$SONAR_TOKEN
 
+  deploy-produto:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar Deploy do Repositório Produto
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PROD_DEPLOY_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-produto/actions/workflows/pipeline.yml/dispatches \
+          -d '{"ref":"main"}'
+
+  deploy-pedido:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar Deploy do Repositório Pedido
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PEDIDO_DEPLOY_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pedido/actions/workflows/pipeline.yml/dispatches \
+          -d '{"ref":"master"}'
+
+  deploy-pagamento:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar Deploy do Repositório Pagamento
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.REPO_PAGAMENTO_DEPLOY_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Lucas-lds/grupo-34-restaurante-pagamento/actions/workflows/pipeline.yml/dispatches \
+          -d '{"ref":"master"}'
+
   # 2. Provisionar infraestrutura com Terraform
   # provision-infrastructure:
   #   runs-on: ubuntu-latest
