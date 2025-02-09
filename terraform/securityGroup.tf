@@ -2,7 +2,7 @@
 
 # Ingress: Permite acesso SSH (porta 22) de qualquer lugar (ou pode ser restrito a IPs específicos).
 # Egress: Permite tráfego de saída para qualquer lugar.
-resource "aws_security_group" "ssh_cluster" {
+resource "aws_security_group" "ssh_cluster_restaurante" {
   name   = "ssh_cluster"
   vpc_id = "vpc-0bb3319f6293b884b"
 }
@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "ssh_cluster_in" {
   to_port           = 22
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] #0.0.0.0 - 255.255.255.255
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 resource "aws_security_group_rule" "https" {
@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "https" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] #0.0.0.0 - 255.255.255.255
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 resource "aws_security_group_rule" "http_80" {
@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "http_80" {
   to_port           = 80
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] # Permitir tráfego de qualquer lugar
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 resource "aws_security_group_rule" "http" {
@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "http" {
   to_port           = 8080
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] # Permitir tráfego de qualquer lugar
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 resource "aws_security_group_rule" "rds" {
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "rds" {
   to_port           = 3306
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] # Permitir tráfego de qualquer lugar
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 resource "aws_security_group_rule" "ssh_cluster_out" {
@@ -58,7 +58,7 @@ resource "aws_security_group_rule" "ssh_cluster_out" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"] #0.0.0.0 - 255.255.255.255
-  security_group_id = aws_security_group.ssh_cluster.id
+  security_group_id = aws_security_group.ssh_cluster_restaurante.id
 }
 
 ### GRUPO DE SEGURANÇA DO RDS (rds_sg) ###

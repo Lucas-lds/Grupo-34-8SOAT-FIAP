@@ -50,6 +50,35 @@ Este projeto faz parte do tech challenge da pós-graduação em Arquitetura de S
 ### 4. Melhoria na Estrutura do Banco de Dados com Amazon RDS
 - **Amazon RDS (MySQL)**: Melhorada a estrutura do banco de dados ao migrar para **Amazon RDS** com a engine **MySQL**, garantindo maior escalabilidade, segurança e facilidade no gerenciamento do banco de dados.
 
+## Changelog - Fase IV
+
+### 1. Refatoração do Projeto para Microsserviços
+- **Microsserviço de Pedido**: Criado o microsserviço **Pedido**, responsável por registrar e listar pedidos, com banco de dados **DynamoDB** (NoSQL).
+- **Microsserviço de Pagamento**: Criado o microsserviço **Pagamento**, responsável por gerenciar a cobrança e atualizar o status do pedido, utilizando **RDS/MySQL** (SQL).
+- **Microsserviço de Produção**: Criado o microsserviço **Produção**, que gerencia a fila de pedidos e atualiza o status de cada etapa do processo de produção, com banco de dados **RDS/MySQL** (SQL).
+
+### 2. Banco de Dados Separado para Cada Microsserviço
+- **DynamoDB (NoSQL)**: O microsserviço **Pedido** foi integrado ao **DynamoDB**, garantindo alta performance e escalabilidade.
+- **RDS/MySQL (SQL)**: Os microsserviços **Pagamento** e **Produção** foram configurados para utilizar **RDS/MySQL**, proporcionando uma estrutura relacional e facilitando a gestão de dados complexos.
+
+### 3. Manutenção dos Módulos Restantes no Monolito
+- **Monolito**: Os demais módulos do sistema permanecem no formato monolítico, com a migração para microsserviços planejada para fases futuras.
+
+### 4. Implementação de Testes Unitários
+- **Testes Unitários**: Todos os microsserviços agora contêm testes unitários para garantir a confiabilidade das funcionalidades.
+- **BDD**: Pelo menos um caminho de teste foi implementado utilizando **BDD** (Behavior-Driven Development).
+- **Cobertura de Testes**: A cobertura de testes foi estabelecida em **70%** ou mais em todos os microsserviços.
+
+### 5. Organização dos Repositórios e CI/CD
+- **Repositórios Separados**: Cada microsserviço agora possui seu próprio repositório, seguindo a abordagem de repositórios separados para cada aplicação. Os **links** para os repositórios dos microsserviços e do monolito são:
+  - [Monolito (Grupo-34-8SOAT-FIAP)](https://github.com/Lucas-lds/Grupo-34-8SOAT-FIAP)
+  - [Microsserviço de Pedido](https://github.com/Lucas-lds/grupo-34-restaurante-pedido)
+  - [Microsserviço de Produto](https://github.com/Lucas-lds/grupo-34-restaurante-produto)
+  - [Microsserviço de Pagamento](https://github.com/Lucas-lds/grupo-34-restaurante-pagamento)
+  
+- **Proteção da Branch Main/Master**: As branches **main/master** estão protegidas, impedindo commits diretos.
+- **Pull Requests e Validação de Build**: Pull requests para a branch **main/master** agora validam o build da aplicação, e a qualidade do código é verificada utilizando **SonarQube**, com cobertura de código mínima de **70%**.
+- **CI/CD Integrado**: Todos os microsserviços estão configurados com **CI/CD** e, no merge de pull requests, o deploy de todos os microsserviços é executado corretamente.
 
 
 ## 🚀 Tecnologias
@@ -71,6 +100,7 @@ Durante o processo de documentação do DDD, os contextos delimitados foram tran
 - Kubernetes
 - Desenho Arquitetura - AWS
   - RDS
+  - DYNAMODB
   - ECR
   - EKS
   - COGNITO
@@ -90,8 +120,7 @@ Como parte da documentação, foram desenvolvidos diversos artefatos para apoiar
 - [Event Storming](https://miro.com/app/board/uXjVKFvfVYM=/)  
 - Requests (API)
   - Swagger: http://localhost:8080/api/v1/swagger-ui/index.html#/
-- [AWS](/documents/AWS/diagrama-aws.png)
-- [AWS](/documents/AWS/stack-utilizada.png)
+- [AWS](/documents/AWS/diagrama-aws-fase-4.png)
 - [justificativa-mysql] (/documents/justificativa-mysql/justificativa-mysql.png)
 - [Vídeo](https://youtu.be/JzOYcsCBB5M)
 - [Collection](https://api.postman.com/collections/9276431-267e5c70-e0e6-455d-8de2-472a2862f7b2?access_key=PMAT-01J9YZDJ12YND5V2FCYB0HPG31)
@@ -215,6 +244,3 @@ http://localhost:8080/api/v1/swagger-ui/index.html#/
     ```bash
     terraform destroy --auto-approve
     ```   
-    
-
-
