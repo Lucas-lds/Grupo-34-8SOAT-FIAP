@@ -22,7 +22,7 @@ jobs:
       - name: Build application
         run: |
           chmod +x mvnw # Concede permissão de execução ao Maven Wrapper
-          ./mvnw clean package -DskipTests=true
+          ./mvnw clean verify jacoco:report
 
       - name: Upload application artifact
         uses: actions/upload-artifact@v4
@@ -39,7 +39,8 @@ jobs:
           -Dsonar.projectKey=Lucas-lds_Grupo-34-8SOAT-FIAP \
           -Dsonar.organization=lucas-lds \
           -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.login=$SONAR_TOKEN \
+          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
   deploy-produto:
     runs-on: ubuntu-latest
