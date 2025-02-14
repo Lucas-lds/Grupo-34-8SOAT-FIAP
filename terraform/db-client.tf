@@ -3,7 +3,7 @@
 resource "aws_instance" "db_client" {
   ami                    = "ami-0ebfd941bbafe70c6"
   instance_type          = "t2.micro"
-  key_name               = "chave-fiap2"
+  key_name               = "chave-fiap"
   vpc_security_group_ids = [aws_security_group.ssh_cluster_restaurante.id]
   subnet_id              = "subnet-0ba1d16a81898b46b"
 
