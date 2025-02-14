@@ -11,12 +11,22 @@ resource "aws_api_gateway_resource" "auth_resource" {
   path_part   = "auth"
 }
 
+# Definindo o Authorizer Cognito
+resource "aws_api_gateway_authorizer" "cognito_authorizer" {
+  name                    = "CognitoAuthorizer"
+  rest_api_id             = aws_api_gateway_rest_api.auth_api.id
+  type                    = "COGNITO_USER_POOLS"   # Usando Cognito como autorizer
+  provider_arns           = [aws_cognito_user_pool.restaurante_user_pool.arn]
+  identity_source         = "method.request.header.Authorization"  # A chave do cabeçalho do JWT
+}
+
 # Método GET para o recurso /auth
 resource "aws_api_gateway_method" "auth_method" {
   rest_api_id   = aws_api_gateway_rest_api.auth_api.id
   resource_id   = aws_api_gateway_resource.auth_resource.id
   http_method   = "GET"
-  authorization = "NONE" # Não precisamos de outro tipo de autorização, já que a autenticação é feita pela Lambda
+  authorization = "COGNITO_USER_POOLS" # A autenticação é feita via Cognito
+  authorizer_id = aws_api_gateway_authorizer.cognito_authorizer.id
 }
 
 # Integração do método com a função Lambda
@@ -35,4 +45,18 @@ resource "aws_lambda_permission" "allow_api_gateway" {
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = aws_lambda_function.auth_function.function_name
+}
+
+# Deployment do API Gateway
+resource "aws_api_gateway_deployment" "auth_api_deployment" {
+  rest_api_id = aws_api_gateway_rest_api.auth_api.id
+  stage_name  = "prod"  # Isso cria a primeira versão do stage, mas se o stage já existir, ele irá reutilizá-lo
+
+  triggers = {
+    redeploy = "${timestamp()}"
+  }
+
+  lifecycle {
+    create_before_destroy = true  # Para garantir que o deployment seja atualizado corretamente
+  }
 }
