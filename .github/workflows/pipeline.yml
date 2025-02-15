@@ -75,7 +75,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Terraform Apply (Conditional)
-        #if: steps.terraform-plan.outcome == 'successs'
+        if: steps.terraform-plan.outcome == 'successs'
         run: terraform apply -auto-approve tfplan
         working-directory: terraform/
         env:
