@@ -18,7 +18,7 @@ output "pem" {
 
 # Recurso para criar um segredo no AWS Secrets Manager
 resource "aws_secretsmanager_secret" "monolito" {
-  name = "keypair-v15" # Nome do segredo que será armazenado
+  name = "keypair-v19" # Nome do segredo que será armazenado
 }
 
 # Recurso para armazenar a versão do segredo no AWS Secrets Manager
