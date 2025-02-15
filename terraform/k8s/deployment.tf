@@ -57,7 +57,7 @@ resource "kubernetes_deployment" "restaurante-api" {
 
         container {
           name  = "restaurante"
-          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v16"
+          image = "717279688908.dkr.ecr.us-east-1.amazonaws.com/repositorio:v17"
 
           env {
             name = "MYSQL_DATABASE"
