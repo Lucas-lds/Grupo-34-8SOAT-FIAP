@@ -1,10 +1,10 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+
 
 import com.fiap.restaurante.application.port.out.usecase.PagamentoUseCasePortOut;
 import com.fiap.restaurante.infrastructure.adapter.in.request.QrCodeRequest;
@@ -55,6 +55,30 @@ public class PagamentoControllerTest {
     }
 
     @Test
+    void consultarStatusPagamentoDeveLancarExcecaoQuandoConexaoFalha() {
+        when(pagamentoUseCasePortOut.consultarStatusPagamento(anyLong()))
+            .thenThrow(new RuntimeException("Erro de conexão com o serviço de pagamento"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            pagamentoController.consultarStatusPagamento(idPedido);
+        });
+
+        assertEquals("Erro de conexão com o serviço de pagamento", exception.getMessage());
+    }
+
+
+    @Test
+    void consultarStatusPagamentoDeveLancarExcecaoQuandoFalhar() {
+        when(pagamentoUseCasePortOut.consultarStatusPagamento(anyLong()))
+            .thenThrow(new RuntimeException("Erro ao consultar status"));
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            pagamentoController.consultarStatusPagamento(idPedido);
+        });
+    }
+
+
+    @Test
     void gerarQrCodeDeveGerarQRCodeComSucesso() {
         when(pagamentoUseCasePortOut.gerarQRCodePagamento(anyDouble(), anyString())).thenReturn(qrCodeResponse);
 
@@ -76,4 +100,15 @@ public class PagamentoControllerTest {
         assertEquals("Notificação recebida com sucesso", response.getBody());
         verify(pagamentoUseCasePortOut, times(1)).receberNotificacao(anyMap());
     }
+
+    @Test
+    void receberNotificacaoDeveRetornarErroQuandoPayloadInvalido() {
+        when(pagamentoUseCasePortOut.receberNotificacao(anyMap()))
+            .thenThrow(new IllegalArgumentException("Payload inválido"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            pagamentoController.receberNotificacao(Map.of());
+        });
+    }
+
 }

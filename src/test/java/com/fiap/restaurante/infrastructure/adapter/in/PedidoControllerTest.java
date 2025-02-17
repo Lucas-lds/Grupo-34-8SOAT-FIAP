@@ -1,11 +1,10 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+
 
 import com.fiap.restaurante.application.port.out.usecase.PedidoUseCasePortOut;
 import com.fiap.restaurante.infrastructure.adapter.in.request.PedidoRequest;
@@ -65,6 +64,19 @@ public class PedidoControllerTest {
     }
 
     @Test
+    void atualizarStatusPedidoDeveLancarExcecaoQuandoPedidoNaoEncontrado() throws BadRequestException {
+        when(pedidoUseCasePortOut.atualizarStatusPedido(anyInt(), eq(pedidoId)))
+            .thenThrow(new BadRequestException("Pedido não encontrado"));
+
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            pedidoController.atualizarStatusPedido(pedidoId, statusRequest);
+        });
+
+        assertEquals("Pedido não encontrado", exception.getMessage());
+    }
+
+
+    @Test
     void atualizarStatusPedidoDeveLancarExcecaoQuandoErro() throws BadRequestException {
         when(pedidoUseCasePortOut.atualizarStatusPedido(anyInt(), eq(pedidoId))).thenThrow(new BadRequestException("Status inválido"));
 
@@ -87,6 +99,19 @@ public class PedidoControllerTest {
     }
 
     @Test
+    void checkoutPedidoDeveLancarExcecaoQuandoErroDeConexao() {
+        when(pedidoUseCasePortOut.checkoutPedido(any(PedidoRequest.class)))
+            .thenThrow(new RuntimeException("Erro de conexão com o banco de dados"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            pedidoController.checkoutPedido(pedidoRequest);
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
+    }
+
+
+    @Test
     void getPedidoByIdDeveRetornarPedidoComSucesso() {
         when(pedidoUseCasePortOut.listarPedidoPorId(eq(pedidoId))).thenReturn(pedidoResponse);
 
@@ -96,6 +121,19 @@ public class PedidoControllerTest {
         assertEquals(pedidoId, response.id());
         verify(pedidoUseCasePortOut, times(1)).listarPedidoPorId(eq(pedidoId));
     }
+
+    @Test
+    void getPedidoByIdDeveLancarExcecaoQuandoPedidoNaoEncontrado() {
+        when(pedidoUseCasePortOut.listarPedidoPorId(eq(pedidoId)))
+            .thenThrow(new RuntimeException("Pedido não encontrado"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            pedidoController.getPedidoById(pedidoId);
+        });
+
+        assertEquals("Pedido não encontrado", exception.getMessage());
+    }
+
 
     @Test
     void listarPedidosDeveRetornarListaDePedidosComSucesso() {
@@ -109,4 +147,26 @@ public class PedidoControllerTest {
         assertEquals(1, response.size());
         verify(pedidoUseCasePortOut, times(1)).listarPedidos();
     }
+
+    @Test
+    void listarPedidosDeveRetornarListaVaziaQuandoNenhumPedido() {
+        when(pedidoUseCasePortOut.listarPedidos()).thenReturn(List.of());
+
+        List<PedidoResponse> response = pedidoController.listarPedidos();
+
+        assertNotNull(response);
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
+    void listarPedidosDeveLancarExcecaoQuandoErroDeConexao() {
+        when(pedidoUseCasePortOut.listarPedidos()).thenThrow(new RuntimeException("Erro de conexão com o banco de dados"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            pedidoController.listarPedidos();
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
+    }
+
 }

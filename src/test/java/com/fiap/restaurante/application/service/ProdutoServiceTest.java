@@ -1,10 +1,10 @@
 package com.fiap.restaurante.application.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+
 
 import com.fiap.restaurante.application.port.out.ProdutoAdapterPortOut;
 import com.fiap.restaurante.core.domain.Produto;
@@ -48,6 +48,28 @@ public class ProdutoServiceTest {
     }
 
     @Test
+    void listarProdutosDeveRetornarListaVaziaQuandoNenhumProduto() {
+        when(produtoAdapterPortOut.listarProdutos()).thenReturn(List.of());
+
+        List<Produto> resultado = produtoService.listarProdutos();
+
+        assertNotNull(resultado);
+        assertTrue(resultado.isEmpty());
+    }
+
+    @Test
+    void listarProdutosDeveLancarExcecaoQuandoErroDeConexao() {
+        when(produtoAdapterPortOut.listarProdutos()).thenThrow(new RuntimeException("Erro de conexão com o banco de dados"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            produtoService.listarProdutos();
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
+    }
+
+
+    @Test
     void listarProdutoPorCategoriaDeveRetornarListaDeProdutos() {
         List<Produto> produtos = List.of(produto);
         when(produtoAdapterPortOut.listarProdutoPorCategoria(anyString())).thenReturn(produtos);
@@ -69,6 +91,29 @@ public class ProdutoServiceTest {
         assertNotNull(resultado);
         assertEquals(produto.getIdProduto(), resultado.getIdProduto());
         verify(produtoAdapterPortOut, times(1)).criarProduto(any(Produto.class));
+    }
+
+
+    @Test
+    void criarProdutoDeveLancarExcecaoQuandoErro() {
+        doThrow(new RuntimeException("Error during product creation")).when(produtoAdapterPortOut).criarProduto(any(Produto.class));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            produtoService.criarProduto(produto);
+        });
+
+        assertEquals("Error during product creation", exception.getMessage());
+    }
+
+    @Test
+    void atualizarProdutoDeveLancarExcecaoQuandoErro() {
+        doThrow(new RuntimeException("Error during product update")).when(produtoAdapterPortOut).atualizarProduto(anyLong(), any(Produto.class));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            produtoService.atualizarProduto(1L, produto);
+        });
+
+        assertEquals("Error during product update", exception.getMessage());
     }
 
     @Test
