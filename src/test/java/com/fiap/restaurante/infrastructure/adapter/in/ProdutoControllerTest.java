@@ -1,10 +1,9 @@
 package com.fiap.restaurante.infrastructure.adapter.in;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
 
 import com.fiap.restaurante.application.port.out.usecase.ProdutoUseCasePortOut;
 import com.fiap.restaurante.core.domain.Produto;
@@ -56,6 +55,27 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    void listarProdutosDeveRetornarListaVaziaQuandoNenhumProduto() {
+        when(produtoUseCasePortOut.listarProdutos()).thenReturn(List.of());
+
+        List<Produto> response = produtoController.listarProdutos();
+
+        assertNotNull(response);
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
+    void listarProdutosDeveLancarExcecaoQuandoErroDeConexao() {
+        when(produtoUseCasePortOut.listarProdutos()).thenThrow(new RuntimeException("Erro de conexão com o banco de dados"));
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            produtoController.listarProdutos();
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
+    }
+
+    @Test
     void buscarPorCategoriaDeveRetornarListaDeProdutosComSucesso() {
         List<Produto> produtos = List.of(produto);
         when(produtoUseCasePortOut.listarProdutoPorCategoria(anyString())).thenReturn(produtos);
@@ -81,6 +101,38 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    void cadastrarProdutoDeveLancarExcecaoQuandoNomeVazio() {
+        produtoRequest = new ProdutoRequest("", "Categoria Teste", 100.0, "Descricao Teste", "http://imagem.url/teste.jpg");
+
+        when(produtoUseCasePortOut.criarProduto(any(Produto.class)))
+            .thenThrow(new IllegalArgumentException("Nome do produto não pode ser vazio"));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            produtoController.cadastrarProduto(produtoRequest);
+        });
+
+        assertEquals("Nome do produto não pode ser vazio", exception.getMessage());
+        verify(produtoUseCasePortOut, times(1)).criarProduto(any(Produto.class));
+    }
+
+
+    @Test
+    void cadastrarProdutoDeveLancarExcecaoQuandoPrecoInvalido() {
+        produtoRequest = new ProdutoRequest("Produto Teste", "Categoria Teste", -100.0, "Descricao Teste", "http://imagem.url/teste.jpg");
+
+        when(produtoUseCasePortOut.criarProduto(any(Produto.class)))
+            .thenThrow(new IllegalArgumentException("Preço do produto deve ser maior que zero"));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            produtoController.cadastrarProduto(produtoRequest);
+        });
+
+        assertEquals("Preço do produto deve ser maior que zero", exception.getMessage());
+        verify(produtoUseCasePortOut, times(1)).criarProduto(any(Produto.class));
+    }
+
+
+    @Test
     void atualizarProdutoDeveAtualizarProdutoComSucesso() throws BadRequestException {
         when(produtoUseCasePortOut.atualizarProduto(anyLong(), any(Produto.class))).thenReturn(produto);
 
@@ -93,6 +145,30 @@ public class ProdutoControllerTest {
     }
 
     @Test
+    void atualizarProdutoDeveLancarExcecaoQuandoProdutoNaoEncontrado() throws BadRequestException {
+        when(produtoUseCasePortOut.atualizarProduto(anyLong(), any(Produto.class)))
+            .thenThrow(new BadRequestException("Produto não encontrado"));
+
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+            produtoController.atualizarProduto(1L, produtoRequest);
+        });
+
+        assertEquals("Produto não encontrado", exception.getMessage());
+    }
+
+    @Test
+    void atualizarProdutoDeveLancarExcecaoQuandoErroDeConexao() throws BadRequestException {
+        when(produtoUseCasePortOut.atualizarProduto(anyLong(), any(Produto.class)))
+            .thenThrow(new RuntimeException("Erro de conexão com o banco de dados"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            produtoController.atualizarProduto(1L, produtoRequest);
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
+    }
+
+    @Test
     void deletarPorIdDeveDeletarProdutoComSucesso() {
         doNothing().when(produtoUseCasePortOut).deletarPorId(anyLong());
 
@@ -101,5 +177,18 @@ public class ProdutoControllerTest {
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(produtoUseCasePortOut, times(1)).deletarPorId(anyLong());
+    }
+
+    @Test
+    void deletarPorIdDeveLancarExcecaoQuandoErroDeConexao() {
+
+        doThrow(new RuntimeException("Erro de conexão com o banco de dados"))
+            .when(produtoUseCasePortOut).deletarPorId(anyLong());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            produtoController.deletarPorId(1L);
+        });
+
+        assertEquals("Erro de conexão com o banco de dados", exception.getMessage());
     }
 }

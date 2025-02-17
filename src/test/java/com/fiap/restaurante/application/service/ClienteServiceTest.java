@@ -1,9 +1,10 @@
 package com.fiap.restaurante.application.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+
 
 import com.fiap.restaurante.application.port.out.ClienteAdapterPortOut;
 import com.fiap.restaurante.application.port.out.CognitoAdapterPortOut;
@@ -70,5 +71,53 @@ public class ClienteServiceTest {
         clienteService.autenticarCliente("123.456.789-00");
 
         verify(validarCpfLambdaPortOut, times(1)).validarCpf(anyString());
+    }
+
+    @Test
+    void autenticarClienteDeveLancarExcecaoQuandoConexaoFalha() {
+        doThrow(new RuntimeException("Erro de conexão com o serviço de validação"))
+            .when(validarCpfLambdaPortOut).validarCpf(anyString());
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            clienteService.autenticarCliente("123.456.789-00");
+        });
+
+        assertEquals("Erro de conexão com o serviço de validação", exception.getMessage());
+    }
+
+
+    // New tests for improving coverage
+    @Test
+    void cadastrarDeveLancarExcecaoQuandoErro() {
+        doThrow(new RuntimeException("Error during registration")).when(clienteAdapterPortOut).cadastrar(any(Cliente.class));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.cadastrar(cliente);
+        });
+
+        assertEquals("Error during registration", exception.getMessage());
+    }
+
+    @Test
+    void buscarDeveLancarExcecaoQuandoClienteNaoEncontrado() {
+        when(clienteAdapterPortOut.buscar(anyString())).thenThrow(new RuntimeException("Cliente não encontrado"));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.buscar("999.999.999-99");
+        });
+
+        assertEquals("Cliente não encontrado", exception.getMessage());
+    }
+
+
+    @Test
+    void autenticarClienteDeveLancarExcecaoParaCpfInvalido() {
+        doThrow(new IllegalArgumentException("Invalid CPF")).when(validarCpfLambdaPortOut).validarCpf(anyString());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            clienteService.autenticarCliente("invalid-cpf");
+        });
+
+        assertEquals("Invalid CPF", exception.getMessage());
     }
 }
