@@ -6,7 +6,7 @@ resource "tls_private_key" "tls_private" {
 
 # Recurso para criar um par de chaves na AWS
 resource "aws_key_pair" "generated_key" {
-  key_name   = "chave-fiap2"                                  # Nome da chave que será utilizada para acessar a instância EC2
+  key_name   = "chave-fiap"                                   # Nome da chave que será utilizada para acessar a instância EC2
   public_key = tls_private_key.tls_private.public_key_openssh # Chave pública gerada a partir da chave privada
 }
 
@@ -18,7 +18,7 @@ output "pem" {
 
 # Recurso para criar um segredo no AWS Secrets Manager
 resource "aws_secretsmanager_secret" "monolito" {
-  name = "keypair-v7" # Nome do segredo que será armazenado
+  name = "keypair-v19" # Nome do segredo que será armazenado
 }
 
 # Recurso para armazenar a versão do segredo no AWS Secrets Manager

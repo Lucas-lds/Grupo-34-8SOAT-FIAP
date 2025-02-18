@@ -25,7 +25,11 @@ resource "aws_iam_role_policy" "lambda_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action   = ["cognito-idp:ListUsers"], # Permite a ação ListUsers no Cognito
+        Action = [
+          "cognito-idp:ListUsers",
+          "cognito-idp:AdminInitiateAuth",
+          "cognito-idp:InitiateAuth"
+        ],
         Effect   = "Allow",
         Resource = aws_cognito_user_pool.restaurante_user_pool.arn # Restrição para o User Pool específico
       }
