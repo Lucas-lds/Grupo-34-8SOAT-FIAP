@@ -80,6 +80,8 @@ Este projeto faz parte do tech challenge da pós-graduação em Arquitetura de S
 - **Pull Requests e Validação de Build**: Pull requests para a branch **main/master** agora validam o build da aplicação, e a qualidade do código é verificada utilizando **SonarQube**, com cobertura de código mínima de **70%**.
 - **CI/CD Integrado**: Todos os microsserviços estão configurados com **CI/CD** e, no merge de pull requests, o deploy de todos os microsserviços é executado corretamente.
 
+## Cobertura das Classes de Teste:
+![image](https://github.com/user-attachments/assets/dca17af4-5d02-41b4-95ae-3e8563c2b5a8)
 
 ## 🚀 Tecnologias
 
