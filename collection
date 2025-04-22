@@ -1,0 +1,215 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "14cbe2e7-f7fb-4d34-92d2-d0d9bd61cc67",
+      "name": "APIs Thumbnail",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "updatedAt": "2025-04-22T13:03:52.000Z",
+      "createdAt": "2025-04-22T11:19:14.000Z",
+      "lastUpdatedBy": "38294302",
+      "uid": "38294302-14cbe2e7-f7fb-4d34-92d2-d0d9bd61cc67"
+    },
+    "item": [
+      {
+        "name": "Usuario",
+        "item": [
+          {
+            "name": "Cadastrar",
+            "id": "5bc70822-e76b-484c-8d4f-e6f5e06edef5",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"nome\": \"Fulano Teste\",\r\n  \"email\": \"Fulano@gmail.com\",\r\n  \"senha\": \"Teste@200\",\r\n  \"telefone\": \"+551331413754\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "http://localhost:8080/usuario/cadastrar",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "8080",
+                "path": [
+                  "usuario",
+                  "cadastrar"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "38294302-5bc70822-e76b-484c-8d4f-e6f5e06edef5"
+          },
+          {
+            "name": "Autenticar",
+            "id": "d4b5f66c-5551-421e-84cb-283cc4e58b93",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8080/usuario/auth?email=Fulano@gmail.com&senha=Teste@200",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "8080",
+                "path": [
+                  "usuario",
+                  "auth"
+                ],
+                "query": [
+                  {
+                    "key": "email",
+                    "value": "Fulano@gmail.com",
+                    "type": "text",
+                    "id": 0
+                  },
+                  {
+                    "key": "senha",
+                    "value": "Teste@200",
+                    "type": "text",
+                    "id": 1
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "uid": "38294302-d4b5f66c-5551-421e-84cb-283cc4e58b93"
+          }
+        ],
+        "id": "bd7f5818-71d2-425f-b583-d5264c041172",
+        "uid": "38294302-bd7f5818-71d2-425f-b583-d5264c041172"
+      },
+      {
+        "name": "Processamento",
+        "item": [
+          {
+            "name": "Enviar",
+            "id": "0d16e6c2-0552-484d-8420-6fe704b5cb88",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  {
+                    "key": "videos",
+                    "type": "file",
+                    "uuid": "7916a074-3982-47ad-b3fd-5ac962dda6d8",
+                    "id": 0,
+                    "fileUploadError": "",
+                    "src": [
+                      "c:\\Users\\lucas\\Videos\\minions.mp4"
+                    ]
+                  },
+                  {
+                    "key": "idUsuario",
+                    "value": "1",
+                    "type": "text",
+                    "uuid": "a44f1a1d-188a-4e20-a219-a6764ec260a6",
+                    "id": 1
+                  }
+                ]
+              },
+              "url": {
+                "raw": "http://localhost:8080/thumbnail/enviar",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "8080",
+                "path": [
+                  "thumbnail",
+                  "enviar"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "38294302-0d16e6c2-0552-484d-8420-6fe704b5cb88"
+          },
+          {
+            "name": "Status",
+            "id": "dd5b011a-d42b-4532-90ad-46b0a9fe0573",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8080/thumbnail/status?idUsuario=1",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "8080",
+                "path": [
+                  "thumbnail",
+                  "status"
+                ],
+                "query": [
+                  {
+                    "key": "idUsuario",
+                    "value": "1",
+                    "type": "text",
+                    "id": 0
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "uid": "38294302-dd5b011a-d42b-4532-90ad-46b0a9fe0573"
+          },
+          {
+            "name": "Download",
+            "id": "32f3cc36-bd1a-4874-b350-66238578f746",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "http://localhost:8080/thumbnail/download?idUsuario=1",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "8080",
+                "path": [
+                  "thumbnail",
+                  "download"
+                ],
+                "query": [
+                  {
+                    "key": "idUsuario",
+                    "value": "1",
+                    "type": "text",
+                    "id": 0
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "uid": "38294302-32f3cc36-bd1a-4874-b350-66238578f746"
+          }
+        ],
+        "id": "414727a1-95e4-4d03-9fe8-88b4035fddfc",
+        "uid": "38294302-414727a1-95e4-4d03-9fe8-88b4035fddfc"
+      }
+    ]
+  }
+}
